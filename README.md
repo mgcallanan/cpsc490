@@ -34,6 +34,15 @@ The polygons are completely custom, in that they can have as many sides at whate
   - To view progress on this, checkout the `concave_hull` branch.
   - Demo:
 
+![](demos/concave_hull_v1_demo.gif)
+To use:
+
+1. Draw polygons as you do normally. The red dots demarcate each vertex of the figure.
+2. Press "o" to view the concave hull of the set.
+3. Press any key to increase the `k` value of the hull, it will change the lines.
+4. At any time, press the "o" button again to switch between the concave hull of the set and the originally drawn figure.
+
 ## Dependencies
 
 - [p5.js](https://p5js.org/)
+- [ConcaveHullJS](https://github.com/markroland/concaveHullJS)
