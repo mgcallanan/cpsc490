@@ -22,7 +22,8 @@ function draw() {
   // Draw current line that hasn't been set yet
   if (mouseIsPressed) {
     line(currentLineOrigin[0], currentLineOrigin[1], mouseX, mouseY);
-    fill(255, 255, 255);
+    noFill();
+    strokeWeight(2);
     ellipse(mouseX, mouseY, 20);
   }
 
@@ -46,11 +47,12 @@ function draw() {
     line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
   }
 
-  for (let i = 0; i < allVertices.length; i++) {
-    fill(255, 0, 0);
-    noStroke();
-    ellipse(allVertices[i][0], allVertices[i][1], 30);
-  }
+  // To get red dots at every vertex
+  // for (let i = 0; i < allVertices.length; i++) {
+  //   fill(255, 0, 0);
+  //   noStroke();
+  //   ellipse(allVertices[i][0], allVertices[i][1], 30);
+  // }
 }
 
 /* full screening will change the size of the canvas */
