@@ -3,6 +3,9 @@
 let currentLineOrigin = [];
 let allVertices = [];
 let currentVertices = [];
+let hullVertices = [];
+let k = 1;
+let displayHull = false;
 let shapes = [];
 let lines = [];
 let firstClicked = false;
@@ -27,24 +30,36 @@ function draw() {
     ellipse(mouseX, mouseY, 20);
   }
 
-  // Draw shapes that have been drawn
-  for (let i = 0; i < shapes.length; i++) {
-    let currShape = shapes[i];
+  if (displayHull) {
+    stroke(0, 0, 255);
     noFill();
-    stroke(255, 255, 255);
-    strokeWeight(5);
     beginShape();
-    for (let j = 0; j < currShape.length; j++) {
-      vertex(currShape[j][0], currShape[j][1]);
+    for (let i = 0; i < hullVertices.length; i++) {
+      vertex(hullVertices[i][0], hullVertices[i][1]);
     }
     endShape(CLOSE);
   }
 
-  // Draw lines of the vertex
-  for (let i = 0; i < lines.length; i++) {
-    stroke(255, 255, 255);
-    strokeWeight(5);
-    line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+  // Draw shapes that have been drawn
+  if (!displayHull) {
+    for (let i = 0; i < shapes.length; i++) {
+      let currShape = shapes[i];
+      noFill();
+      stroke(255, 255, 255);
+      strokeWeight(5);
+      beginShape();
+      for (let j = 0; j < currShape.length; j++) {
+        vertex(currShape[j][0], currShape[j][1]);
+      }
+      endShape(CLOSE);
+    }
+
+    // Draw lines of the vertex
+    for (let i = 0; i < lines.length; i++) {
+      stroke(255, 255, 255);
+      strokeWeight(5);
+      line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+    }
   }
 
   // To get red dots at every vertex
@@ -111,10 +126,19 @@ function touchStarted() {
 //   // currentVertices.push([mouseX, mouseY]);
 // }
 
-function doubleClicked() {
-  doneShape = true;
-  currentLineOrigin = [];
-  shapes.push(currentVertices);
+function calculateConcaveHull(points, k) {
+  let hull = concaveHull.calculate(points, k);
+  return hull;
+}
 
-  currentVertices = [];
+function keyTyped() {
+  if (key === "o") {
+    displayHull = !displayHull;
+  }
+  k++;
+  console.log(k);
+  hullVertices = [];
+  // hullVertices = calculateConcaveHull(allVertices, k);
+  hullVertices = hull(allVertices, 20);
+  console.log(hullVertices);
 }
