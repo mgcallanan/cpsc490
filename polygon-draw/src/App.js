@@ -17,7 +17,7 @@ function App() {
   let allVertices = [];
   let currentVertices = [];
   let hullVertices = [];
-  let k = 1;
+  let k = 20;
   let displayHull = false;
   let shapes = [];
   let lines = [];
@@ -35,13 +35,6 @@ function App() {
     p5.stroke(255, 255, 255);
     p5.strokeWeight(5);
 
-    // Draw current line that hasn't been set yet
-    if (p5.mouseIsPressed) {
-      p5.line(currentLineOrigin[0], currentLineOrigin[1], p5.mouseX, p5.mouseY);
-      p5.fill(255, 255, 255);
-      p5.ellipse(p5.mouseX, p5.mouseY, 20);
-    }
-
     if (displayHull) {
       p5.stroke(0, 0, 255);
       p5.noFill();
@@ -54,6 +47,19 @@ function App() {
 
     // Draw shapes that have been drawn
     if (!displayHull) {
+      // Draw current line that hasn't been set yet
+      if (p5.mouseIsPressed) {
+        p5.line(
+          currentLineOrigin[0],
+          currentLineOrigin[1],
+          p5.mouseX,
+          p5.mouseY
+        );
+        p5.stroke(255, 255, 255);
+        p5.noFill();
+        p5.ellipse(p5.mouseX, p5.mouseY, 20);
+      }
+
       for (let i = 0; i < shapes.length; i++) {
         let currShape = shapes[i];
         p5.noFill();
@@ -78,7 +84,7 @@ function App() {
     for (let i = 0; i < allVertices.length; i++) {
       p5.fill(255, 0, 0);
       p5.noStroke();
-      p5.ellipse(allVertices[i][0], allVertices[i][1], 30);
+      p5.ellipse(allVertices[i][0], allVertices[i][1], 10);
     }
   };
 
@@ -131,21 +137,22 @@ function App() {
     }
   };
 
-  const calculateConcaveHull = (points, k) => {
-    // let hull = concaveHull.calculate(points, k);
-    return hull;
-  };
-
   const keyTyped = (p5) => {
     if (p5.key === "o") {
       displayHull = !displayHull;
+    } else if (p5.key === "k") {
+      k += 10;
+      console.log(k);
+      hullVertices = [];
+      hullVertices = hull(allVertices, k);
+      console.log(hullVertices);
+    } else if (p5.key === "j") {
+      k -= 10;
+      console.log(k);
+      hullVertices = [];
+      hullVertices = hull(allVertices, k);
+      console.log(hullVertices);
     }
-    k++;
-    console.log(k);
-    hullVertices = [];
-    // hullVertices = calculateConcaveHull(allVertices, k);
-    hullVertices = hull(allVertices, 20);
-    console.log(hullVertices);
   };
 
   // function mouseClicked() {
