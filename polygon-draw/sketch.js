@@ -136,6 +136,7 @@ function keyTyped() {
   k++;
   console.log(k);
   hullVertices = [];
-  hullVertices = calculateConcaveHull(allVertices, k);
+  // hullVertices = calculateConcaveHull(allVertices, k);
+  hullVertices = hull(allVertices, 20);
   console.log(hullVertices);
 }
