@@ -1,5 +1,6 @@
 import React from "react";
 import Sketch from "react-p5";
+import hull from "hull.js";
 
 function App() {
   // const setup = (p5, canvasParentRef) => {
@@ -15,6 +16,9 @@ function App() {
   let currentLineOrigin = [];
   let allVertices = [];
   let currentVertices = [];
+  let hullVertices = [];
+  let k = 1;
+  let displayHull = false;
   let shapes = [];
   let lines = [];
   let firstClicked = false;
@@ -34,37 +38,48 @@ function App() {
     // Draw current line that hasn't been set yet
     if (p5.mouseIsPressed) {
       p5.line(currentLineOrigin[0], currentLineOrigin[1], p5.mouseX, p5.mouseY);
-      p5.noFill();
-      p5.strokeWeight(2);
+      p5.fill(255, 255, 255);
       p5.ellipse(p5.mouseX, p5.mouseY, 20);
     }
 
-    // Draw shapes that have been drawn
-    for (let i = 0; i < shapes.length; i++) {
-      let currShape = shapes[i];
+    if (displayHull) {
+      p5.stroke(0, 0, 255);
       p5.noFill();
-      p5.stroke(255, 255, 255);
-      p5.strokeWeight(5);
       p5.beginShape();
-      for (let j = 0; j < currShape.length; j++) {
-        p5.vertex(currShape[j][0], currShape[j][1]);
+      for (let i = 0; i < hullVertices.length; i++) {
+        p5.vertex(hullVertices[i][0], hullVertices[i][1]);
       }
       p5.endShape(p5.CLOSE);
     }
 
-    // Draw lines of the vertex
-    for (let i = 0; i < lines.length; i++) {
-      p5.stroke(255, 255, 255);
-      p5.strokeWeight(5);
-      p5.line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+    // Draw shapes that have been drawn
+    if (!displayHull) {
+      for (let i = 0; i < shapes.length; i++) {
+        let currShape = shapes[i];
+        p5.noFill();
+        p5.stroke(255, 255, 255);
+        p5.strokeWeight(5);
+        p5.beginShape();
+        for (let j = 0; j < currShape.length; j++) {
+          p5.vertex(currShape[j][0], currShape[j][1]);
+        }
+        p5.endShape(p5.CLOSE);
+      }
+
+      // Draw lines of the vertex
+      for (let i = 0; i < lines.length; i++) {
+        p5.stroke(255, 255, 255);
+        p5.strokeWeight(5);
+        p5.line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+      }
     }
 
     // To get red dots at every vertex
-    // for (let i = 0; i < allVertices.length; i++) {
-    //   fill(255, 0, 0);
-    //   noStroke();
-    //   ellipse(allVertices[i][0], allVertices[i][1], 30);
-    // }
+    for (let i = 0; i < allVertices.length; i++) {
+      p5.fill(255, 0, 0);
+      p5.noStroke();
+      p5.ellipse(allVertices[i][0], allVertices[i][1], 30);
+    }
   };
 
   /* full screening will change the size of the canvas */
@@ -116,6 +131,23 @@ function App() {
     }
   };
 
+  const calculateConcaveHull = (points, k) => {
+    // let hull = concaveHull.calculate(points, k);
+    return hull;
+  };
+
+  const keyTyped = (p5) => {
+    if (p5.key === "o") {
+      displayHull = !displayHull;
+    }
+    k++;
+    console.log(k);
+    hullVertices = [];
+    // hullVertices = calculateConcaveHull(allVertices, k);
+    hullVertices = hull(allVertices, 20);
+    console.log(hullVertices);
+  };
+
   // function mouseClicked() {
   //   if (doneShape) {
   //     doneShape = false;
@@ -144,6 +176,7 @@ function App() {
       mouseReleased={mouseReleased}
       touchStarted={touchStarted}
       doubleClicked={doubleClicked}
+      keyTyped={keyTyped}
     />
   );
 }
