@@ -12,6 +12,10 @@ import {
 } from "../utils/translatePart";
 
 const SCALE_FACTOR = 0.5;
+const HEAD_SCALE_FACTOR = 0.7;
+const TORSO_SCALE_FACTOR = 0.8;
+const ARM_SCALE_FACTOR = 0.5;
+const LEG_SCALE_FACTOR = 0.6;
 
 function BodySketch(props) {
   const {
@@ -56,7 +60,11 @@ function BodySketch(props) {
 
   if (headComplete) {
     headBBoxVals = calculateBBox(headVertices);
-    let scaledHeadInfo = scalePolygon(headVertices, headBBoxVals, SCALE_FACTOR);
+    let scaledHeadInfo = scalePolygon(
+      headVertices,
+      headBBoxVals,
+      HEAD_SCALE_FACTOR
+    );
     if (!transformedHeadVerts.length) {
       setTransformedHeadVerts(
         placePolygon(
@@ -74,7 +82,7 @@ function BodySketch(props) {
     let scaledTorsoInfo = scalePolygon(
       torsoVertices,
       torsoBBoxVals,
-      SCALE_FACTOR
+      TORSO_SCALE_FACTOR
     );
 
     let transformedHeadInfo = getPolygonInfo(
@@ -104,7 +112,7 @@ function BodySketch(props) {
     let scaledRightArmInfo = scalePolygon(
       rightArmVertices,
       rightArmBBoxVals,
-      SCALE_FACTOR
+      ARM_SCALE_FACTOR
     );
 
     if (!transformedRightArmVerts.length) {
@@ -132,7 +140,7 @@ function BodySketch(props) {
     let scaledLeftArmInfo = scalePolygon(
       leftArmVertices,
       leftArmBBoxVals,
-      SCALE_FACTOR
+      ARM_SCALE_FACTOR
     );
 
     if (!transformedLeftArmVerts.length) {
@@ -156,7 +164,7 @@ function BodySketch(props) {
     let scaledRightLegInfo = scalePolygon(
       rightLegVertices,
       rightLegBBoxVals,
-      SCALE_FACTOR
+      LEG_SCALE_FACTOR
     );
 
     if (!transformedRightLegVerts.length) {
@@ -185,7 +193,7 @@ function BodySketch(props) {
     let scaledLeftLegInfo = scalePolygon(
       leftLegVertices,
       leftLegBBoxVals,
-      SCALE_FACTOR
+      LEG_SCALE_FACTOR
     );
 
     if (!transformedLeftLegVerts.length) {
