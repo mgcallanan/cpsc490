@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import P5Sketch from "./P5Sketch";
 import "../styles/prompt.scss";
+import BodySketch from "./BodySketch";
 
 const BODY_PARTS = [
   "Head",
@@ -22,8 +23,13 @@ function Prompt(props) {
           {BODY_PARTS[newScreen]}
         </h1>
       </div>
-      <div className="sketch-container">
-        <P5Sketch bodyPart={BODY_PARTS[newScreen]} />
+      <div className="sketches-container">
+        <div className="draw-sketch-container">
+          <P5Sketch bodyPart={BODY_PARTS[newScreen]} />
+        </div>
+        <div className="body-sketch-container">
+          <BodySketch bodyPart={BODY_PARTS[newScreen]} />
+        </div>
       </div>
       <div className="prompt-done-btn-container">
         <button

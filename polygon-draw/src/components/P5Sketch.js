@@ -25,7 +25,9 @@ function P5Sketch({ bodyPart }) {
   };
 
   const draw = (p5) => {
-    p5.background(0);
+    //   p5.background(0);
+    p5.clear();
+    p5.background("rgba(0,0,0, 0.60)");
     p5.stroke(255, 255, 255);
     p5.strokeWeight(5);
 
@@ -107,38 +109,42 @@ function P5Sketch({ bodyPart }) {
           console.log("DONE");
           doneShape = true;
           currentLineOrigin = [];
-          currentVertices.push([currentVertices[0][0], currentVertices[0][1]]);
-          if (bodyPart === "Head") {
-            dispatch({
-              type: shapeActions.UPDATE_HEAD_VERTICES,
-              payload: currentVertices,
-            });
-          } else if (bodyPart === "Torso") {
-            dispatch({
-              type: shapeActions.UPDATE_TORSO_VERTICES,
-              payload: currentVertices,
-            });
-          } else if (bodyPart === "Right Arm") {
-            dispatch({
-              type: shapeActions.UPDATE_RIGHT_ARM_VERTICES,
-              payload: currentVertices,
-            });
-          } else if (bodyPart === "Left Arm") {
-            dispatch({
-              type: shapeActions.UPDATE_LEFT_ARM_VERTICES,
-              payload: currentVertices,
-            });
-          } else if (bodyPart === "Right Leg") {
-            dispatch({
-              type: shapeActions.UPDATE_RIGHT_LEG_VERTICES,
-              payload: currentVertices,
-            });
-          } else if (bodyPart === "Left Leg") {
-            dispatch({
-              type: shapeActions.UPDATE_LEFT_LEG_VERTICES,
-              payload: currentVertices,
-            });
-          }
+          currentVertices = [
+            ...currentVertices,
+            [currentVertices[0][0], currentVertices[0][1]],
+          ];
+          //   currentVertices.push([currentVertices[0][0], currentVertices[0][1]]);
+          //   if (bodyPart === "Head") {
+          //     dispatch({
+          //       type: shapeActions.UPDATE_HEAD_VERTICES,
+          //       payload: currentVertices,
+          //     });
+          //   } else if (bodyPart === "Torso") {
+          //     dispatch({
+          //       type: shapeActions.UPDATE_TORSO_VERTICES,
+          //       payload: currentVertices,
+          //     });
+          //   } else if (bodyPart === "Right Arm") {
+          //     dispatch({
+          //       type: shapeActions.UPDATE_RIGHT_ARM_VERTICES,
+          //       payload: currentVertices,
+          //     });
+          //   } else if (bodyPart === "Left Arm") {
+          //     dispatch({
+          //       type: shapeActions.UPDATE_LEFT_ARM_VERTICES,
+          //       payload: currentVertices,
+          //     });
+          //   } else if (bodyPart === "Right Leg") {
+          //     dispatch({
+          //       type: shapeActions.UPDATE_RIGHT_LEG_VERTICES,
+          //       payload: currentVertices,
+          //     });
+          //   } else if (bodyPart === "Left Leg") {
+          //     dispatch({
+          //       type: shapeActions.UPDATE_LEFT_LEG_VERTICES,
+          //       payload: currentVertices,
+          //     });
+          //   }
           shapes.push(currentVertices);
 
           currentVertices = [];
@@ -154,8 +160,41 @@ function P5Sketch({ bodyPart }) {
       currentLineOrigin = [_p5.mouseX, _p5.mouseY];
       firstClicked = !firstClicked;
       allVertices.push([_p5.mouseX, _p5.mouseY]);
-      currentVertices.push([_p5.mouseX, _p5.mouseY]);
+      // currentVertices.push([_p5.mouseX, _p5.mouseY]);
+      currentVertices = [...currentVertices, [_p5.mouseX, _p5.mouseY]];
       allVertices.push([_p5.mouseX, _p5.mouseY]);
+
+      if (bodyPart === "Head") {
+        dispatch({
+          type: shapeActions.UPDATE_HEAD_VERTICES,
+          payload: currentVertices,
+        });
+      } else if (bodyPart === "Torso") {
+        dispatch({
+          type: shapeActions.UPDATE_TORSO_VERTICES,
+          payload: currentVertices,
+        });
+      } else if (bodyPart === "Right Arm") {
+        dispatch({
+          type: shapeActions.UPDATE_RIGHT_ARM_VERTICES,
+          payload: currentVertices,
+        });
+      } else if (bodyPart === "Left Arm") {
+        dispatch({
+          type: shapeActions.UPDATE_LEFT_ARM_VERTICES,
+          payload: currentVertices,
+        });
+      } else if (bodyPart === "Right Leg") {
+        dispatch({
+          type: shapeActions.UPDATE_RIGHT_LEG_VERTICES,
+          payload: currentVertices,
+        });
+      } else if (bodyPart === "Left Leg") {
+        dispatch({
+          type: shapeActions.UPDATE_LEFT_LEG_VERTICES,
+          payload: currentVertices,
+        });
+      }
     }
   };
 
@@ -170,7 +209,7 @@ function P5Sketch({ bodyPart }) {
       _p5.mouseY <= _p5.height &&
       _p5.mouseY >= 0
     ) {
-      console.log(doneShape, currentLineOrigin, currentVertices);
+      //   console.log(doneShape, currentLineOrigin, currentVertices);
       if (doneShape) {
         currentLineOrigin = [_p5.mouseX, _p5.mouseY];
         currentVertices.push([_p5.mouseX, _p5.mouseY]);
@@ -185,16 +224,16 @@ function P5Sketch({ bodyPart }) {
       displayHull = !displayHull;
     } else if (p5.key === "k") {
       k += 10;
-      console.log(k);
+      //   console.log(k);
       hullVertices = [];
       hullVertices = hull(allVertices, k);
-      console.log(hullVertices);
+      //   console.log(hullVertices);
     } else if (p5.key === "j") {
       k -= 10;
-      console.log(k);
+      //   console.log(k);
       hullVertices = [];
       hullVertices = hull(allVertices, k);
-      console.log(hullVertices);
+      //   console.log(hullVertices);
     }
   };
 
