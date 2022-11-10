@@ -8,6 +8,13 @@ const initialState = {
   leftArmVertices: [],
   rightLegVertices: [],
   leftLegVertices: [],
+  headComplete: false,
+  torsoComplete: false,
+  rightArmComplete: false,
+  leftArmComplete: false,
+  rightLegComplete: false,
+  leftLegComplete: false,
+  bodyComplete: false,
 };
 
 const shapesSlice = createSlice({
@@ -50,6 +57,48 @@ const shapesSlice = createSlice({
         leftLegVertices: action.payload,
       };
     },
+    setHeadComplete(state, action) {
+      return {
+        ...state,
+        headComplete: action.payload,
+      };
+    },
+    setTorsoComplete(state, action) {
+      return {
+        ...state,
+        torsoComplete: action.payload,
+      };
+    },
+    setRightArmComplete(state, action) {
+      return {
+        ...state,
+        rightArmComplete: action.payload,
+      };
+    },
+    setLeftArmComplete(state, action) {
+      return {
+        ...state,
+        leftArmComplete: action.payload,
+      };
+    },
+    setRightLegComplete(state, action) {
+      return {
+        ...state,
+        rightLegComplete: action.payload,
+      };
+    },
+    setLeftLegComplete(state, action) {
+      return {
+        ...state,
+        leftLegComplete: action.payload,
+      };
+    },
+    setBodyComplete(state, action) {
+      return {
+        ...state,
+        bodyComplete: action.payload,
+      };
+    },
   },
 });
 
@@ -59,6 +108,12 @@ export const {
   updateRightArmVertices,
   updateLeftLegVertices,
   updateRightLegVertices,
+  setHeadComplete,
+  setRightArmComplete,
+  setLeftArmComplete,
+  setRightLegComplete,
+  setLeftLegComplete,
+  setBodyComplete,
 } = shapesSlice.actions;
 
 export default shapesSlice.reducer;

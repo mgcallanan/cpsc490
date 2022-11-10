@@ -22,7 +22,7 @@
 
   .prompt-done-btn-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     vertical-align: middle;
     justify-content: center;
@@ -39,11 +39,13 @@
       border: 3px solid white;
       background-color: black;
       color: white;
+      margin: 1%;
       //   height: 50%;
       //   width: 30%;
       font-size: 2em;
       font-weight: bold;
       padding: 2% 4%;
+      //   vertical-align: center;
     }
   }
 }

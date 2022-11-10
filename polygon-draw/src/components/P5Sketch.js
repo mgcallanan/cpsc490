@@ -18,6 +18,14 @@ function P5Sketch({ bodyPart }) {
   let doneShape = true;
   const dispatch = useDispatch();
 
+  //   console.log(bodyPart);
+  //   if (!bodyPart) {
+  //     dispatch({
+  //       type: shapeActions.SET_BODY_COMPLETE,
+  //       payload: true,
+  //     });
+  //   }
+
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(p5.windowWidth * 0.8, p5.windowHeight * 0.75).parent(
       canvasParentRef
@@ -27,7 +35,9 @@ function P5Sketch({ bodyPart }) {
   const draw = (p5) => {
     //   p5.background(0);
     p5.clear();
-    p5.background("rgba(0,0,0, 0.60)");
+    if (bodyPart) {
+      p5.background("rgba(0,0,0, 0.60)");
+    }
     p5.stroke(255, 255, 255);
     p5.strokeWeight(5);
 
@@ -108,43 +118,44 @@ function P5Sketch({ bodyPart }) {
         ) {
           console.log("DONE");
           doneShape = true;
+
+          if (bodyPart === "Head") {
+            dispatch({
+              type: shapeActions.SET_HEAD_COMPLETE,
+              payload: doneShape,
+            });
+          } else if (bodyPart === "Torso") {
+            dispatch({
+              type: shapeActions.SET_TORSO_COMPLETE,
+              payload: doneShape,
+            });
+          } else if (bodyPart === "Right Arm") {
+            dispatch({
+              type: shapeActions.SET_RIGHT_ARM_COMPLETE,
+              payload: doneShape,
+            });
+          } else if (bodyPart === "Left Arm") {
+            dispatch({
+              type: shapeActions.SET_LEFT_ARM_COMPLETE,
+              payload: doneShape,
+            });
+          } else if (bodyPart === "Right Leg") {
+            dispatch({
+              type: shapeActions.SET_RIGHT_LEG_COMPLETE,
+              payload: doneShape,
+            });
+          } else if (bodyPart === "Left Leg") {
+            dispatch({
+              type: shapeActions.SET_LEFT_LEG_COMPLETE,
+              payload: doneShape,
+            });
+          }
+
           currentLineOrigin = [];
           currentVertices = [
             ...currentVertices,
             [currentVertices[0][0], currentVertices[0][1]],
           ];
-          //   currentVertices.push([currentVertices[0][0], currentVertices[0][1]]);
-          //   if (bodyPart === "Head") {
-          //     dispatch({
-          //       type: shapeActions.UPDATE_HEAD_VERTICES,
-          //       payload: currentVertices,
-          //     });
-          //   } else if (bodyPart === "Torso") {
-          //     dispatch({
-          //       type: shapeActions.UPDATE_TORSO_VERTICES,
-          //       payload: currentVertices,
-          //     });
-          //   } else if (bodyPart === "Right Arm") {
-          //     dispatch({
-          //       type: shapeActions.UPDATE_RIGHT_ARM_VERTICES,
-          //       payload: currentVertices,
-          //     });
-          //   } else if (bodyPart === "Left Arm") {
-          //     dispatch({
-          //       type: shapeActions.UPDATE_LEFT_ARM_VERTICES,
-          //       payload: currentVertices,
-          //     });
-          //   } else if (bodyPart === "Right Leg") {
-          //     dispatch({
-          //       type: shapeActions.UPDATE_RIGHT_LEG_VERTICES,
-          //       payload: currentVertices,
-          //     });
-          //   } else if (bodyPart === "Left Leg") {
-          //     dispatch({
-          //       type: shapeActions.UPDATE_LEFT_LEG_VERTICES,
-          //       payload: currentVertices,
-          //     });
-          //   }
           shapes.push(currentVertices);
 
           currentVertices = [];
