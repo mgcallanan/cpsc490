@@ -17,7 +17,10 @@ function Prompt(props) {
   return (
     <div className="prompt-container">
       <div className="prompt-header">
-        <h1>Draw Your Figure's {BODY_PARTS[newScreen]}</h1>
+        <h1>
+          Draw Your Figure's <br />
+          {BODY_PARTS[newScreen]}
+        </h1>
       </div>
       <div className="sketch-container">
         <P5Sketch newScreen />
