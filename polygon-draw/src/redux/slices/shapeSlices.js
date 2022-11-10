@@ -1,55 +1,64 @@
-import * as shapeActions from "../actions/shapeActions"
+// import * as shapeActions from "../actions/shapeActions"
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    headVertices: [],
-    torsoVertices: [],
-    rightArmVertices: [],
-    leftArmVertices: [],
-    rightLegVertices: [],
-    leftLegVertices: []
+  headVertices: [],
+  torsoVertices: [],
+  rightArmVertices: [],
+  leftArmVertices: [],
+  rightLegVertices: [],
+  leftLegVertices: [],
 };
 
-export default function appReducer(state = initialState, action) {
-  switch (action.type) {
-    case shapeActions.UPDATE_HEAD_VERTICES: {
+const shapesSlice = createSlice({
+  name: "shapes",
+  initialState,
+  reducers: {
+    updateHeadVertices(state, action) {
       return {
         ...state,
         headVertices: action.payload,
       };
-    }
-    case shapeActions.UPDATE_TORSO_VERTICES: {
+    },
+    updateTorsoVertices(state, action) {
       return {
         ...state,
         torsoVertices: action.payload,
       };
-    }
-    case shapeActions.UPDATE_RIGHT_ARM_VERTICES: {
+    },
+    updateRightArmVertices(state, action) {
       return {
         ...state,
         rightArmVertices: action.payload,
       };
-    }
-    case shapeActions.UPDATE_LEFT_ARM_VERTICES: {
-\      return {
+    },
+    updateLeftArmVertices(state, action) {
+      return {
         ...state,
         leftArmVertices: action.payload,
       };
-    }
-    case shapeActions.UPDATE_RIGHT_LEG_VERTICES: {
+    },
+    updateRightLegVertices(state, action) {
       return {
         ...state,
         rightLegVertices: action.payload,
       };
-    }
-    case shapeActions.UPDATE_LEFT_LEG_VERTICES: {
+    },
+    updateLeftLegVertices(state, action) {
       return {
         ...state,
         leftLegVertices: action.payload,
       };
-    }
-    default:
-      // If this reducer doesn't recognize the action type, or doesn't
-      // care about this specific action, return the existing state unchanged
-      return state;
-  }
-}
+    },
+  },
+});
+
+export const {
+  updateHeadVertices,
+  updateLeftArmVertices,
+  updateRightArmVertices,
+  updateLeftLegVertices,
+  updateRightLegVertices,
+} = shapesSlice.actions;
+
+export default shapesSlice.reducer;

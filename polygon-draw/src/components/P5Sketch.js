@@ -1,9 +1,11 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import Sketch from "react-p5/";
 import hull from "hull.js";
 import "../styles/p5sketch.scss";
+import * as shapeActions from "../redux/actions/shapeActions";
 
-function P5Sketch(props) {
+function P5Sketch({ bodyPart }) {
   let currentLineOrigin = [];
   let allVertices = [];
   let currentVertices = [];
@@ -14,6 +16,7 @@ function P5Sketch(props) {
   let lines = [];
   let firstClicked = false;
   let doneShape = true;
+  const dispatch = useDispatch();
 
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(p5.windowWidth * 0.8, p5.windowHeight * 0.75).parent(
@@ -90,32 +93,70 @@ function P5Sketch(props) {
   // }
 
   const mouseReleased = (_p5, event) => {
-    if (currentVertices.length) {
-      if (
-        Math.abs(_p5.mouseX - currentVertices[0][0]) <= 20 &&
-        Math.abs(_p5.mouseY - currentVertices[0][1]) <= 20
-      ) {
-        console.log("DONE");
-        doneShape = true;
-        currentLineOrigin = [];
-        currentVertices.push([currentVertices[0][0], currentVertices[0][1]]);
-        shapes.push(currentVertices);
+    if (
+      _p5.mouseX <= _p5.width &&
+      _p5.mouseX >= 0 &&
+      _p5.mouseY <= _p5.height &&
+      _p5.mouseY >= 0
+    ) {
+      if (currentVertices.length) {
+        if (
+          Math.abs(_p5.mouseX - currentVertices[0][0]) <= 20 &&
+          Math.abs(_p5.mouseY - currentVertices[0][1]) <= 20
+        ) {
+          console.log("DONE");
+          doneShape = true;
+          currentLineOrigin = [];
+          currentVertices.push([currentVertices[0][0], currentVertices[0][1]]);
+          if (bodyPart === "Head") {
+            dispatch({
+              type: shapeActions.UPDATE_HEAD_VERTICES,
+              payload: currentVertices,
+            });
+          } else if (bodyPart === "Torso") {
+            dispatch({
+              type: shapeActions.UPDATE_TORSO_VERTICES,
+              payload: currentVertices,
+            });
+          } else if (bodyPart === "Right Arm") {
+            dispatch({
+              type: shapeActions.UPDATE_RIGHT_ARM_VERTICES,
+              payload: currentVertices,
+            });
+          } else if (bodyPart === "Left Arm") {
+            dispatch({
+              type: shapeActions.UPDATE_LEFT_ARM_VERTICES,
+              payload: currentVertices,
+            });
+          } else if (bodyPart === "Right Leg") {
+            dispatch({
+              type: shapeActions.UPDATE_RIGHT_LEG_VERTICES,
+              payload: currentVertices,
+            });
+          } else if (bodyPart === "Left Leg") {
+            dispatch({
+              type: shapeActions.UPDATE_LEFT_LEG_VERTICES,
+              payload: currentVertices,
+            });
+          }
+          shapes.push(currentVertices);
 
-        currentVertices = [];
-        return;
+          currentVertices = [];
+          return;
+        }
       }
+      lines.push([
+        currentLineOrigin[0],
+        currentLineOrigin[1],
+        _p5.mouseX,
+        _p5.mouseY,
+      ]);
+      currentLineOrigin = [_p5.mouseX, _p5.mouseY];
+      firstClicked = !firstClicked;
+      allVertices.push([_p5.mouseX, _p5.mouseY]);
+      currentVertices.push([_p5.mouseX, _p5.mouseY]);
+      allVertices.push([_p5.mouseX, _p5.mouseY]);
     }
-    lines.push([
-      currentLineOrigin[0],
-      currentLineOrigin[1],
-      _p5.mouseX,
-      _p5.mouseY,
-    ]);
-    currentLineOrigin = [_p5.mouseX, _p5.mouseY];
-    firstClicked = !firstClicked;
-    allVertices.push([_p5.mouseX, _p5.mouseY]);
-    currentVertices.push([_p5.mouseX, _p5.mouseY]);
-    allVertices.push([_p5.mouseX, _p5.mouseY]);
   };
 
   const touchStarted = (_p5, event) => {
@@ -123,12 +164,19 @@ function P5Sketch(props) {
     // if (!fs) {
     //   _p5.fullscreen(true);
     // }
-    console.log(doneShape, currentLineOrigin, currentVertices);
-    if (doneShape) {
-      currentLineOrigin = [_p5.mouseX, _p5.mouseY];
-      currentVertices.push([_p5.mouseX, _p5.mouseY]);
-      allVertices.push([_p5.mouseX, _p5.mouseY]);
-      doneShape = false;
+    if (
+      _p5.mouseX <= _p5.width &&
+      _p5.mouseX >= 0 &&
+      _p5.mouseY <= _p5.height &&
+      _p5.mouseY >= 0
+    ) {
+      console.log(doneShape, currentLineOrigin, currentVertices);
+      if (doneShape) {
+        currentLineOrigin = [_p5.mouseX, _p5.mouseY];
+        currentVertices.push([_p5.mouseX, _p5.mouseY]);
+        allVertices.push([_p5.mouseX, _p5.mouseY]);
+        doneShape = false;
+      }
     }
   };
 
@@ -162,13 +210,13 @@ function P5Sketch(props) {
   //   // currentVertices.push([p5.mouseX, p5.mouseY]);
   // }
 
-  const doubleClicked = (_p5, event) => {
-    doneShape = true;
-    currentLineOrigin = [];
-    shapes.push(currentVertices);
+  //   const doubleClicked = (_p5, event) => {
+  //     doneShape = true;
+  //     currentLineOrigin = [];
+  //     shapes.push(currentVertices);
 
-    currentVertices = [];
-  };
+  //     currentVertices = [];
+  //   };
 
   return (
     <Sketch
@@ -177,7 +225,7 @@ function P5Sketch(props) {
       windowResized={windowResized}
       mouseReleased={mouseReleased}
       touchStarted={touchStarted}
-      doubleClicked={doubleClicked}
+      //   doubleClicked={doubleClicked}
       keyTyped={keyTyped}
     />
   );

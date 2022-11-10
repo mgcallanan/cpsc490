@@ -23,7 +23,7 @@ function Prompt(props) {
         </h1>
       </div>
       <div className="sketch-container">
-        <P5Sketch newScreen />
+        <P5Sketch bodyPart={BODY_PARTS[newScreen]} />
       </div>
       <div className="prompt-done-btn-container">
         <button
