@@ -1,0 +1,51 @@
+.prompt-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  height: 100%;
+  width: 100%;
+
+  .prompt-header {
+    text-align: center;
+  }
+
+  .sketches-container {
+    position: relative;
+
+    .draw-sketch-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  .prompt-done-btn-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+
+    .prompt-done-btn:active {
+      background-color: white;
+      color: black;
+      cursor: pointer;
+    }
+
+    .prompt-done-btn {
+      border: 3px solid white;
+      background-color: black;
+      color: white;
+      margin: 1%;
+      //   height: 50%;
+      //   width: 30%;
+      font-size: 2em;
+      font-weight: bold;
+      padding: 2% 4%;
+      //   vertical-align: center;
+    }
+  }
+}
