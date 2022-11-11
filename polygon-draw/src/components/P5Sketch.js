@@ -87,11 +87,11 @@ function P5Sketch({ bodyPart }) {
     }
 
     // To get red dots at every vertex
-    for (let i = 0; i < allVertices.length; i++) {
-      p5.fill(255, 0, 0);
-      p5.noStroke();
-      p5.ellipse(allVertices[i][0], allVertices[i][1], 10);
-    }
+    // for (let i = 0; i < allVertices.length; i++) {
+    //   p5.fill(255, 0, 0);
+    //   p5.noStroke();
+    //   p5.ellipse(allVertices[i][0], allVertices[i][1], 10);
+    // }
   };
 
   /* full screening will change the size of the canvas */
