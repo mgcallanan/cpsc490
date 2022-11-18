@@ -22,3 +22,30 @@ body {
   height: 100%;
   width: 100%;
 }
+
+h1,
+h2,
+h3,
+h4,
+p {
+  color: white;
+}
+
+button:active {
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+button {
+  border: 3px solid white;
+  background-color: black;
+  color: white;
+  margin: 1%;
+  //   height: 50%;
+  //   width: 30%;
+  font-size: 2em;
+  font-weight: bold;
+  padding: 2% 4%;
+  //   vertical-align: center;
+}

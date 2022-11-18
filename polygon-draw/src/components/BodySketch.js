@@ -232,7 +232,7 @@ function BodySketch(props) {
   }, [transformedLeftLegVerts]);
 
   const setup = (p5, canvasParentRef) => {
-    p5.createCanvas(p5.windowWidth * 0.8, p5.windowHeight * 0.75).parent(
+    p5.createCanvas(p5.windowWidth * 0.8, p5.windowHeight * 0.65).parent(
       canvasParentRef
     );
 
