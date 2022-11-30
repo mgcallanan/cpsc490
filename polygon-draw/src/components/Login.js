@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import * as userActions from "../redux/actions/userActions";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { addProjector, getProjectors } from "../services/dataStore";
+
 import "../styles/login.scss";
 
 function Login() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleArtistClick = () => {
     dispatch({
       type: userActions.SET_IS_ARTIST,
       payload: true,
     });
+    navigate("/artist");
   };
 
   const handleProjectorClick = () => {
@@ -18,6 +22,7 @@ function Login() {
       type: userActions.SET_IS_PROJECTOR,
       payload: true,
     });
+    navigate("/projector");
   };
 
   return (

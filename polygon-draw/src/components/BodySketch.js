@@ -10,6 +10,7 @@ import {
   scalePolygon,
   placePolygon,
 } from "../utils/translatePart";
+import { setVertices, storeVertices } from "../services/dataStore";
 
 const SCALE_FACTOR = 0.5;
 const HEAD_SCALE_FACTOR = 0.7;
@@ -32,6 +33,7 @@ function BodySketch(props) {
     rightLegComplete,
     leftLegComplete,
     bodyComplete,
+    projectorID,
   } = props;
 
   const [canvasHeight, setCanvasHeight] = useState(0);
@@ -229,6 +231,11 @@ function BodySketch(props) {
   }, [transformedRightLegVerts]);
   useEffect(() => {
     setAllVertices((prevState) => prevState.concat(transformedLeftLegVerts));
+    if (projectorID && transformedLeftLegVerts) {
+      storeVertices({ id: projectorID, allVertices }).then((response) =>
+        console.log(response)
+      );
+    }
   }, [transformedLeftLegVerts]);
 
   const setup = (p5, canvasParentRef) => {
@@ -410,6 +417,7 @@ const mapStateToProps = (state) => {
     rightLegComplete: state.shapes.rightLegComplete,
     leftLegComplete: state.shapes.leftLegComplete,
     bodyComplete: state.shapes.bodyComplete,
+    projectorID: state.users.projectorID,
   };
 };
 export default connect(mapStateToProps)(BodySketch);

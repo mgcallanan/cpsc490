@@ -1,0 +1,62 @@
+.artist-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  height: 100%;
+  width: 100%;
+
+  .artist-header {
+    text-align: center;
+  }
+
+  .id-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      * {
+        margin: 0.5em;
+      }
+
+      label {
+        font-size: 2em;
+        font-weight: bold;
+      }
+
+      input[type="submit"] {
+        border: 3px solid white;
+        background-color: white;
+        color: black;
+        //   height: 50%;
+        //   width: 30%;
+        font-weight: bold;
+        font-size: 1.5em;
+        padding: 2% 4%;
+
+        :hover {
+          background-color: black;
+          color: white;
+        }
+      }
+
+      input[type="text"] {
+        border: 2px solid white;
+        background-color: black;
+        color: white;
+        font-weight: bold;
+
+        font-size: 1.5em;
+        width: 4em;
+        text-align: center;
+      }
+    }
+  }
+}

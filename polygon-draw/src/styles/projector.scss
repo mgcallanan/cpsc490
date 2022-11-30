@@ -1,0 +1,21 @@
+.projector-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  height: 100%;
+  width: 100%;
+
+  .projector-header {
+    text-align: center;
+  }
+
+  .id-container {
+    flex-grow: 1;
+    font-size: 30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}

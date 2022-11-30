@@ -1,0 +1,55 @@
+{
+  "projectors": [
+    {
+      "id": 1,
+      "allVertices": []
+    },
+    {
+      "id": "QM",
+      "allVertices": []
+    },
+    {
+      "id": "4A",
+      "allVertices": []
+    },
+    {
+      "id": "ZA",
+      "allVertices": []
+    },
+    {
+      "id": "D2",
+      "allVertices": []
+    },
+    {
+      "id": "IZ",
+      "allVertices": []
+    },
+    {
+      "id": "SO",
+      "allVertices": []
+    },
+    {
+      "id": "IS",
+      "allVertices": []
+    },
+    {
+      "id": "IE",
+      "allVertices": []
+    },
+    {
+      "id": "69",
+      "allVertices": []
+    },
+    {
+      "id": "WR",
+      "allVertices": []
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Mary",
+      "connectedTo": 1
+    }
+  ]
+}

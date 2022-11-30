@@ -28,9 +28,27 @@ const userSlice = createSlice({
         isProjector: action.payload,
       };
     },
+    setProjectorID(state, action) {
+      return {
+        ...state,
+        projectorID: action.payload,
+      };
+    },
+    setConnectedToProjectorID(state, action) {
+      return {
+        ...state,
+        connectedToProjectorID: action.payload,
+      };
+    },
   },
 });
 
-export const { setIsArtist, setIsProjector, setUserType } = userSlice.actions;
+export const {
+  setIsArtist,
+  setIsProjector,
+  setUserType,
+  setProjectorID,
+  setConnectedToProjectorID,
+} = userSlice.actions;
 
 export default userSlice.reducer;
