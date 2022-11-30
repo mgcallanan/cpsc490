@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import Sketch from "react-p5/";
 import hull from "hull.js";
 import "../styles/bodySketch.scss";
@@ -35,6 +35,8 @@ function BodySketch(props) {
     bodyComplete,
     projectorID,
   } = props;
+
+  const dispatch = useDispatch();
 
   const [canvasHeight, setCanvasHeight] = useState(0);
   const [canvasWidth, setCanvasWidth] = useState(0);
@@ -76,7 +78,7 @@ function BodySketch(props) {
           canvasHeight / 4
         )
       );
-      setAllVertices((prevState) => [...prevState, ...transformedHeadVerts]);
+      // setAllVertices((prevState) => [...prevState, ...transformedHeadVerts]);
     }
   }
   if (torsoComplete) {
@@ -101,7 +103,7 @@ function BodySketch(props) {
             scaledTorsoInfo.bBoxVals.yRadius
         )
       );
-      setAllVertices((prevState) => [...prevState, ...transformedTorsoVerts]);
+      // setAllVertices((prevState) => [...prevState, ...transformedTorsoVerts]);
     }
   }
 
@@ -127,10 +129,10 @@ function BodySketch(props) {
         )
       );
 
-      setAllVertices((prevState) => [
-        ...prevState,
-        ...transformedRightArmVerts,
-      ]);
+      // setAllVertices((prevState) => [
+      //   ...prevState,
+      //   ...transformedRightArmVerts,
+      // ]);
     }
   }
   if (leftArmComplete) {
@@ -154,7 +156,7 @@ function BodySketch(props) {
           transformedTorsoInfo.topLeftY + transformedTorsoInfo.yRadius * 0.4
         )
       );
-      setAllVertices((prevState) => [...prevState, ...transformedLeftArmVerts]);
+      // setAllVertices((prevState) => [...prevState, ...transformedLeftArmVerts]);
     }
   }
   if (rightLegComplete) {
@@ -180,10 +182,10 @@ function BodySketch(props) {
             scaledRightLegInfo.bBoxVals.yRadius
         )
       );
-      setAllVertices((prevState) => [
-        ...prevState,
-        ...transformedRightLegVerts,
-      ]);
+      // setAllVertices((prevState) => [
+      //   ...prevState,
+      //   ...transformedRightLegVerts,
+      // ]);
     }
   }
   if (leftLegComplete) {
@@ -209,7 +211,6 @@ function BodySketch(props) {
             scaledLeftLegInfo.bBoxVals.yRadius
         )
       );
-      console.log(allVertices);
     }
   }
 
@@ -231,12 +232,18 @@ function BodySketch(props) {
   }, [transformedRightLegVerts]);
   useEffect(() => {
     setAllVertices((prevState) => prevState.concat(transformedLeftLegVerts));
-    if (projectorID && transformedLeftLegVerts) {
-      storeVertices({ id: projectorID, allVertices }).then((response) =>
-        console.log(response)
-      );
-    }
   }, [transformedLeftLegVerts]);
+
+  useEffect(() => {
+    dispatch({
+      type: shapeActions.UPDATE_ALL_VERTICES,
+      payload: allVertices,
+    });
+    console.log(projectorID);
+    storeVertices({ id: projectorID, allVertices }).then((response) =>
+      console.log(response)
+    );
+  }, [allVertices]);
 
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(p5.windowWidth * 0.8, p5.windowHeight * 0.65).parent(

@@ -39,15 +39,30 @@ export const addProjector = (projector) => {
   }).then((response) => response.json());
 };
 
-export const storeVertices = (projector) => {
-  fetch(`http://localhost:8080/projectors/${projector.id}`, {
-    body: JSON.stringify(projector),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    method: "PUT",
-  }).then((response) => response.json());
+export const storeVertices = async (projector) => {
+  //   fetch(`http://localhost:8080/projectors/${projector.id}`, {
+  //     body: JSON.stringify(projector),
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     method: "PUT",
+  //   }).then((response) => response.json());
+  // };
+
+  const response = await fetch(
+    `http://localhost:8080/projectors/${projector.id}`,
+    {
+      body: JSON.stringify(projector),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    }
+  );
+  const data = await response.json();
+  return data;
 };
 
 // set available projectors

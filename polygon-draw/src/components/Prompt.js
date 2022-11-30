@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useCallback, useEffect, useContext } from "react";
+import { useDispatch, connect } from "react-redux";
 import P5Sketch from "./P5Sketch";
 import "../styles/prompt.scss";
 import BodySketch from "./BodySketch";
@@ -14,11 +14,62 @@ const BODY_PARTS = [
   "Left Leg",
 ];
 
+const socketURL = "ws://localhost:3000/ws";
+const URL = "ws://127.0.0.1:9000";
+
 function Prompt(props) {
+  const { allVertices } = props;
+  console.log(allVertices);
+
   const [newScreen, setNewScreen] = useState(0);
   const [displayHull, setDisplayHull] = useState(true);
   const [k, setK] = useState(20);
+  const [ws, setWs] = useState(new WebSocket(URL));
+
   const dispatch = useDispatch();
+
+  const submitMessage = (type, payload) => {
+    const message = { type: type, payload: payload };
+    console.log(message);
+    ws.send(JSON.stringify(message));
+  };
+
+  useEffect(() => {
+    ws.onopen = () => {
+      console.log("WebSocket Connected");
+    };
+
+    ws.onmessage = (e) => {
+      const message = JSON.parse(e.data);
+      console.log(message);
+    };
+
+    return () => {
+      ws.onclose = () => {
+        console.log("WebSocket Disconnected");
+        setWs(new WebSocket(URL));
+      };
+    };
+  }, [ws.onmessage, ws.onopen, ws.onclose]);
+
+  // const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
+  //   onOpen: () => console.log("WebSocket connection opened."),
+  //   onClose: () => console.log("WebSocket connection closed."),
+  //   shouldReconnect: (closeEvent) => true,
+  //   onMessage: (event) => console.log(event),
+  // });
+
+  const handleDone = () => {
+    // sendMessage("Hello");
+    dispatch({
+      type: shapeActions.SET_BODY_COMPLETE,
+      payload: true,
+    });
+    console.log(allVertices);
+    submitMessage("submit", allVertices);
+    // sendMessage("hello");
+    console.log("yay");
+  };
 
   return (
     <div className="prompt-container">
@@ -62,11 +113,8 @@ function Prompt(props) {
           onClick={
             newScreen < BODY_PARTS.length
               ? () => setNewScreen(newScreen + 1)
-              : () =>
-                  dispatch({
-                    type: shapeActions.SET_BODY_COMPLETE,
-                    payload: true,
-                  })
+              : // () => handleDone()
+                () => handleDone()
           }
         >
           {newScreen < BODY_PARTS.length ? "Next Part" : "Convert"}
@@ -83,4 +131,10 @@ function Prompt(props) {
   );
 }
 
-export default Prompt;
+const mapStateToProps = (state) => {
+  return {
+    allVertices: state.shapes.allVertices,
+  };
+};
+
+export default connect(mapStateToProps)(Prompt);

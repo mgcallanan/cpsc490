@@ -1,19 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import useWebSocket, { useSocketIO } from "react-use-websocket";
 import P5Sketch from "./P5Sketch";
 import "../styles/projector.scss";
 import BodySketch from "./BodySketch";
 import * as shapeActions from "../redux/actions/shapeActions";
 import { getProjectors, addProjector } from "../services/dataStore";
 
-const BODY_PARTS = [
-  "Head",
-  "Torso",
-  "Right Arm",
-  "Left Arm",
-  "Right Leg",
-  "Left Leg",
-];
+const socketURL = "ws://localhost:3000/ws";
+const URL = "ws://127.0.0.1:9000";
 
 const idExists = (projID, projectors) => {
   return projectors.some((e) => e.id === projID);
@@ -21,9 +16,33 @@ const idExists = (projID, projectors) => {
 
 function Projector(props) {
   const [projectorID, setProjectorID] = useState("");
-  const [displayHull, setDisplayHull] = useState(true);
-  const [k, setK] = useState(20);
   const dispatch = useDispatch();
+  const [ws, setWs] = useState(new WebSocket(URL));
+
+  useEffect(() => {
+    ws.onopen = () => {
+      console.log("WebSocket Connected");
+    };
+
+    ws.onmessage = (e) => {
+      const message = JSON.parse(e.data);
+      console.log(message);
+    };
+
+    return () => {
+      ws.onclose = () => {
+        console.log("WebSocket Disconnected");
+        setWs(new WebSocket(URL));
+      };
+    };
+  }, [ws.onmessage, ws.onopen, ws.onclose]);
+
+  const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
+    onOpen: () => console.log("WebSocket connection opened."),
+    onClose: () => console.log("WebSocket connection closed."),
+    shouldReconnect: (closeEvent) => true,
+    onMessage: (event) => console.log(event),
+  });
 
   getProjectors().then((response) => {
     console.log(response);
@@ -40,6 +59,12 @@ function Projector(props) {
       addProjector(newProj);
     }
   });
+
+  useEffect(() => {
+    if (lastMessage != null) {
+      console.log(lastMessage);
+    }
+  }, [lastMessage]);
 
   return (
     <div className="projector-container">
