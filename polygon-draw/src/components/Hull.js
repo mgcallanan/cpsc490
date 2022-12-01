@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import Sketch from "react-p5/";
 import hull from "hull.js";
-import "../styles/bodySketch.scss";
+import "../styles/hull.scss";
 import * as shapeActions from "../redux/actions/shapeActions";
 import {
   calculateBBox,
   getPolygonInfo,
   scalePolygon,
   placePolygon,
+  placeAtBottom,
 } from "../utils/translatePart";
 import { setVertices, storeVertices, getVertices } from "../services/dataStore";
 
@@ -18,6 +19,18 @@ function Hull({ id }) {
   const [canvasHeight, setCanvasHeight] = useState(0);
   const [canvasWidth, setCanvasWidth] = useState(0);
   const [allVertices, setAllVertices] = useState([]);
+  const [hullVertices, setHullVertices] = useState([]);
+
+  if (!allVertices.length) {
+    getVertices(id).then((response) => {
+      console.log(response);
+      console.log(response.allVertices);
+      if (response.allVertices) {
+        setAllVertices(response.allVertices);
+        setHullVertices(hull(response.allVertices, 120));
+      }
+    });
+  }
 
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(p5.windowWidth * 0.8, p5.windowHeight * 0.85).parent(
@@ -27,31 +40,32 @@ function Hull({ id }) {
     setCanvasHeight(p5.height);
     setCanvasWidth(p5.width);
   };
-  if (!allVertices.length) {
-    getVertices(id).then((response) => {
-      console.log(response);
-      console.log(response.allVertices);
-      if (response.allVertices) {
-        setAllVertices(response.allVertices);
-      }
-    });
-  }
+
+  let count = 1;
 
   const draw = (p5) => {
     p5.background(0);
 
-    //   console.log("ALLLLL DONEEEE");
-    if (allVertices.length) {
-      const hullVertices = hull(allVertices, 100);
-      p5.stroke(0, 0, 255);
+    if (hullVertices.length) {
+      const newVertices = placeAtBottom(hullVertices, p5.height, p5.width);
+      //   const hullVertices = hull(allVertices, 100);
+      //   console.log(hullVertices);
+      p5.stroke(255, 255, 255);
       p5.strokeWeight(5);
 
       p5.noFill();
       p5.beginShape();
-      for (let i = 0; i < hullVertices.length; i++) {
-        p5.vertex(hullVertices[i][0], hullVertices[i][1]);
+      for (let i = 0; i < newVertices.length; i++) {
+        p5.vertex(newVertices[i][0], newVertices[i][1]);
       }
       p5.endShape(p5.CLOSE);
+    }
+
+    if (count === 1) {
+      if (hullVertices.length) {
+        console.log(placeAtBottom(hullVertices, canvasHeight, canvasWidth));
+        count = 2;
+      }
     }
 
     // draw hull

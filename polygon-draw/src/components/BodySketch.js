@@ -9,6 +9,7 @@ import {
   getPolygonInfo,
   scalePolygon,
   placePolygon,
+  addEyes,
 } from "../utils/translatePart";
 import { setVertices, storeVertices } from "../services/dataStore";
 
@@ -43,6 +44,8 @@ function BodySketch(props) {
   const [canvasWidth, setCanvasWidth] = useState(0);
   const [allVertices, setAllVertices] = useState([]);
   const [transformedHeadVerts, setTransformedHeadVerts] = useState([]);
+  const [leftEye, setLeftEye] = useState({});
+  const [rightEye, setRightEye] = useState({});
   const [transformedTorsoVerts, setTransformedTorsoVerts] = useState([]);
   const [transformedRightArmVerts, setTransformedRightArmVerts] = useState([]);
   const [transformedLeftArmVerts, setTransformedLeftArmVerts] = useState([]);
@@ -70,6 +73,7 @@ function BodySketch(props) {
       headBBoxVals,
       HEAD_SCALE_FACTOR
     );
+    console.log("heyyyy");
     if (!transformedHeadVerts.length) {
       setTransformedHeadVerts(
         placePolygon(
@@ -80,6 +84,13 @@ function BodySketch(props) {
         )
       );
       // setAllVertices((prevState) => [...prevState, ...transformedHeadVerts]);
+    } else {
+      if (!Object.keys(leftEye).length || !Object.keys(rightEye).length) {
+        const eyes = addEyes(transformedHeadVerts);
+        setRightEye(eyes.rightEye);
+        setLeftEye(eyes.leftEye);
+        console.log(eyes);
+      }
     }
   }
   if (torsoComplete) {
@@ -274,6 +285,24 @@ function BodySketch(props) {
       p5.beginShape();
       for (let i = 0; i < transformedHeadVerts.length; i++) {
         p5.vertex(transformedHeadVerts[i][0], transformedHeadVerts[i][1]);
+
+        if (
+          transformedHeadVerts[i][0] === leftEye.breakingEdge[0][0] &&
+          transformedHeadVerts[i][1] === leftEye.breakingEdge[0][1]
+        ) {
+          for (let j = 0; j < leftEye.vertices.length; j++) {
+            p5.vertex(leftEye.vertices[j][0], leftEye.vertices[j][1]);
+          }
+        }
+
+        if (
+          transformedHeadVerts[i][0] === rightEye.breakingEdge[0][0] &&
+          transformedHeadVerts[i][1] === rightEye.breakingEdge[0][1]
+        ) {
+          for (let j = 0; j < rightEye.vertices.length; j++) {
+            p5.vertex(rightEye.vertices[j][0], rightEye.vertices[j][1]);
+          }
+        }
       }
       p5.endShape(p5.CLOSE);
 

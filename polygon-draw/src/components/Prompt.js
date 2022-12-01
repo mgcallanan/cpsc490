@@ -4,6 +4,7 @@ import P5Sketch from "./P5Sketch";
 import "../styles/prompt.scss";
 import BodySketch from "./BodySketch";
 import * as shapeActions from "../redux/actions/shapeActions";
+import { SERVER_IP_ADDR } from "../utils/ipAddr";
 
 const BODY_PARTS = [
   "Head",
@@ -15,7 +16,7 @@ const BODY_PARTS = [
 ];
 
 const socketURL = "ws://localhost:3000/ws";
-const URL = "ws://127.0.0.1:9000";
+const URL = `ws://${SERVER_IP_ADDR}:9000`;
 
 function Prompt(props) {
   const { allVertices, connectedToProjectorID } = props;

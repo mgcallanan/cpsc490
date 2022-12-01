@@ -1,5 +1,7 @@
+import { SERVER_IP_ADDR } from "../utils/ipAddr";
+
 export const updateTodo = (todo) => {
-  fetch(`http://localhost:8080/todos/${todo.id}`, {
+  fetch(`http://${SERVER_IP_ADDR}:8080/todos/${todo.id}`, {
     body: JSON.stringify(todo),
     headers: {
       Accept: "application/json",
@@ -10,7 +12,7 @@ export const updateTodo = (todo) => {
 };
 
 export const getProjectors = async () => {
-  const response = await fetch(`http://localhost:8080/projectors`, {
+  const response = await fetch(`http://${SERVER_IP_ADDR}:8080/projectors`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -29,7 +31,7 @@ export const getProjectors = async () => {
 };
 
 export const addProjector = (projector) => {
-  fetch(`http://localhost:8080/projectors`, {
+  fetch(`http://${SERVER_IP_ADDR}:8080/projectors`, {
     body: JSON.stringify(projector),
     headers: {
       Accept: "application/json",
@@ -51,7 +53,7 @@ export const storeVertices = async (projector) => {
   // };
 
   const response = await fetch(
-    `http://localhost:8080/projectors/${projector.id}`,
+    `http://${SERVER_IP_ADDR}:8080/projectors/${projector.id}`,
     {
       body: JSON.stringify(projector),
       headers: {
@@ -69,7 +71,7 @@ export const storeVertices = async (projector) => {
 // set active users
 
 export const storeAllVertices = (projector) => {
-  fetch(`http://localhost:8080/projectors/`, {
+  fetch(`http://${SERVER_IP_ADDR}:8080/projectors/`, {
     body: JSON.stringify(projector),
     headers: {
       Accept: "application/json",
@@ -81,7 +83,7 @@ export const storeAllVertices = (projector) => {
 
 export const getVertices = async (projectorID) => {
   const response = await fetch(
-    `http://localhost:8080/projectors/${projectorID}`,
+    `http://${SERVER_IP_ADDR}:8080/projectors/${projectorID}`,
     {
       headers: {
         Accept: "application/json",
