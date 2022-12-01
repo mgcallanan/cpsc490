@@ -34,6 +34,7 @@ function BodySketch(props) {
     leftLegComplete,
     bodyComplete,
     projectorID,
+    connectedToProjectorID,
   } = props;
 
   const dispatch = useDispatch();
@@ -239,9 +240,9 @@ function BodySketch(props) {
       type: shapeActions.UPDATE_ALL_VERTICES,
       payload: allVertices,
     });
-    console.log(projectorID);
-    storeVertices({ id: projectorID, allVertices }).then((response) =>
-      console.log(response)
+    console.log(connectedToProjectorID);
+    storeVertices({ id: connectedToProjectorID, allVertices }).then(
+      (response) => console.log(response)
     );
   }, [allVertices]);
 
@@ -425,6 +426,7 @@ const mapStateToProps = (state) => {
     leftLegComplete: state.shapes.leftLegComplete,
     bodyComplete: state.shapes.bodyComplete,
     projectorID: state.users.projectorID,
+    connectedToProjectorID: state.users.connectedToProjectorID,
   };
 };
 export default connect(mapStateToProps)(BodySketch);

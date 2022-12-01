@@ -6,6 +6,7 @@ import "../styles/projector.scss";
 import BodySketch from "./BodySketch";
 import * as shapeActions from "../redux/actions/shapeActions";
 import { getProjectors, addProjector } from "../services/dataStore";
+import Hull from "./Hull";
 
 const socketURL = "ws://localhost:3000/ws";
 const URL = "ws://127.0.0.1:9000";
@@ -16,6 +17,7 @@ const idExists = (projID, projectors) => {
 
 function Projector(props) {
   const [projectorID, setProjectorID] = useState("");
+  const [bodyDone, setBodyDone] = useState(false);
   const dispatch = useDispatch();
   const [ws, setWs] = useState(new WebSocket(URL));
 
@@ -27,6 +29,7 @@ function Projector(props) {
     ws.onmessage = (e) => {
       const message = JSON.parse(e.data);
       console.log(message);
+      setBodyDone(true);
     };
 
     return () => {
@@ -45,7 +48,6 @@ function Projector(props) {
   });
 
   getProjectors().then((response) => {
-    console.log(response);
     if (!projectorID) {
       let newProjID = Math.random().toString(36).toUpperCase().slice(2, 4);
       while (idExists(newProjID, response)) {
@@ -68,13 +70,21 @@ function Projector(props) {
 
   return (
     <div className="projector-container">
-      <div className="projector-header">
-        <h1>PROJECTOR ID</h1>
-      </div>
-      <div className="id-container">
-        <div>{projectorID.slice(0, 1)}</div>
-        <div>{projectorID.slice(1, 2)}</div>
-      </div>
+      {bodyDone ? (
+        <div className="id-container">
+          <Hull id={projectorID} />
+        </div>
+      ) : (
+        <>
+          <div className="projector-header">
+            <h1>PROJECTOR ID</h1>
+          </div>
+          <div className="id-container">
+            <div>{projectorID.slice(0, 1)}</div>
+            <div>{projectorID.slice(1, 2)}</div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

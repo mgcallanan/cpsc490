@@ -10,35 +10,49 @@ import {
   scalePolygon,
   placePolygon,
 } from "../utils/translatePart";
-import { setVertices, storeVertices } from "../services/dataStore";
+import { setVertices, storeVertices, getVertices } from "../services/dataStore";
 
-function BodySketch({ allVertices, k }) {
+function Hull({ id }) {
   const dispatch = useDispatch();
 
   const [canvasHeight, setCanvasHeight] = useState(0);
   const [canvasWidth, setCanvasWidth] = useState(0);
+  const [allVertices, setAllVertices] = useState([]);
 
   const setup = (p5, canvasParentRef) => {
-    p5.createCanvas(p5.windowWidth * 0.8, p5.windowHeight * 0.65).parent(
+    p5.createCanvas(p5.windowWidth * 0.8, p5.windowHeight * 0.85).parent(
       canvasParentRef
     );
 
     setCanvasHeight(p5.height);
     setCanvasWidth(p5.width);
   };
+  if (!allVertices.length) {
+    getVertices(id).then((response) => {
+      console.log(response);
+      console.log(response.allVertices);
+      if (response.allVertices) {
+        setAllVertices(response.allVertices);
+      }
+    });
+  }
 
   const draw = (p5) => {
     p5.background(0);
 
     //   console.log("ALLLLL DONEEEE");
-    const hullVertices = hull(allVertices, props.k);
-    p5.stroke(0, 0, 255);
-    p5.noFill();
-    p5.beginShape();
-    for (let i = 0; i < hullVertices.length; i++) {
-      p5.vertex(hullVertices[i][0], hullVertices[i][1]);
+    if (allVertices.length) {
+      const hullVertices = hull(allVertices, 100);
+      p5.stroke(0, 0, 255);
+      p5.strokeWeight(5);
+
+      p5.noFill();
+      p5.beginShape();
+      for (let i = 0; i < hullVertices.length; i++) {
+        p5.vertex(hullVertices[i][0], hullVertices[i][1]);
+      }
+      p5.endShape(p5.CLOSE);
     }
-    p5.endShape(p5.CLOSE);
 
     // draw hull
   };
@@ -62,6 +76,7 @@ const mapStateToProps = (state) => {
     leftLegComplete: state.shapes.leftLegComplete,
     bodyComplete: state.shapes.bodyComplete,
     projectorID: state.users.projectorID,
+    connectedToProjectorID: state.users.connectedToProjectorID,
   };
 };
-export default connect(mapStateToProps)(BodySketch);
+export default connect(mapStateToProps)(Hull);

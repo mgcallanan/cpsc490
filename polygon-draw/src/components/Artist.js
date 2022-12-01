@@ -49,7 +49,7 @@ function Artist(props) {
   };
   const handleSubmit = (event) => {
     dispatch({
-      type: userActions.SET_PROJECTOR_ID,
+      type: userActions.SET_CONNECTED_TO_PROJECTOR_ID,
       payload: projectorID,
     });
     console.log(projectorID);

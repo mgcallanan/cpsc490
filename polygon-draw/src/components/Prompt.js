@@ -18,7 +18,7 @@ const socketURL = "ws://localhost:3000/ws";
 const URL = "ws://127.0.0.1:9000";
 
 function Prompt(props) {
-  const { allVertices } = props;
+  const { allVertices, connectedToProjectorID } = props;
   console.log(allVertices);
 
   const [newScreen, setNewScreen] = useState(0);
@@ -28,8 +28,12 @@ function Prompt(props) {
 
   const dispatch = useDispatch();
 
-  const submitMessage = (type, payload) => {
-    const message = { type: type, payload: payload };
+  const submitMessage = (type, vertices, projectorID) => {
+    const message = {
+      type: type,
+      vertices: vertices,
+      projectorID: connectedToProjectorID,
+    };
     console.log(message);
     ws.send(JSON.stringify(message));
   };
@@ -66,7 +70,7 @@ function Prompt(props) {
       payload: true,
     });
     console.log(allVertices);
-    submitMessage("submit", allVertices);
+    submitMessage("submit", allVertices, connectedToProjectorID);
     // sendMessage("hello");
     console.log("yay");
   };
@@ -134,6 +138,7 @@ function Prompt(props) {
 const mapStateToProps = (state) => {
   return {
     allVertices: state.shapes.allVertices,
+    connectedToProjectorID: state.users.connectedToProjectorID,
   };
 };
 

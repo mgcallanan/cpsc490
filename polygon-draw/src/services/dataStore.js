@@ -78,3 +78,26 @@ export const storeAllVertices = (projector) => {
     method: "PUT",
   }).then((response) => response.json());
 };
+
+export const getVertices = async (projectorID) => {
+  const response = await fetch(
+    `http://localhost:8080/projectors/${projectorID}`,
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+  const data = await response.json();
+  console.log(data);
+  return data;
+  //   fetch(`http://localhost:8080/projectors`, {
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     method: "GET",
+  //   }).then((response) => response.json());
+};
