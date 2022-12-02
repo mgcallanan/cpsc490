@@ -4,6 +4,7 @@ export const UPDATE_RIGHT_ARM_VERTICES = "shapes/updateRightArmVertices";
 export const UPDATE_LEFT_ARM_VERTICES = "shapes/updateLeftArmVertices";
 export const UPDATE_RIGHT_LEG_VERTICES = "shapes/updateRightLegVertices";
 export const UPDATE_LEFT_LEG_VERTICES = "shapes/updateLeftLegVertices";
+export const UPDATE_ALL_VERTICES = "shapes/updateAllVertices";
 
 export const SET_HEAD_COMPLETE = "shapes/setHeadComplete";
 export const SET_TORSO_COMPLETE = "shapes/setTorsoComplete";
