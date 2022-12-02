@@ -326,27 +326,27 @@ function BodySketch(props) {
       p5.beginShape();
       for (
         let i = 0;
-        i < transformedHeadVerts.length && leftEye.breakingEdge;
+        i < transformedHeadVerts.length && leftEye.breakingEdge.length;
         i++
       ) {
         p5.vertex(transformedHeadVerts[i][0], transformedHeadVerts[i][1]);
-        if (
-          transformedHeadVerts[i][0] === leftEye.breakingEdge[0][0] &&
-          transformedHeadVerts[i][1] === leftEye.breakingEdge[0][1]
-        ) {
-          for (let j = 0; j < leftEye.vertices.length; j++) {
-            p5.vertex(leftEye.vertices[j][0], leftEye.vertices[j][1]);
-          }
-        }
+        // if (
+        //   transformedHeadVerts[i][0] === leftEye.breakingEdge[0][0] &&
+        //   transformedHeadVerts[i][1] === leftEye.breakingEdge[0][1]
+        // ) {
+        //   for (let j = 0; j < leftEye.vertices.length; j++) {
+        //     p5.vertex(leftEye.vertices[j][0], leftEye.vertices[j][1]);
+        //   }
+        // }
 
-        if (
-          transformedHeadVerts[i][0] === rightEye.breakingEdge[0][0] &&
-          transformedHeadVerts[i][1] === rightEye.breakingEdge[0][1]
-        ) {
-          for (let j = 0; j < rightEye.vertices.length; j++) {
-            p5.vertex(rightEye.vertices[j][0], rightEye.vertices[j][1]);
-          }
-        }
+        // if (
+        //   transformedHeadVerts[i][0] === rightEye.breakingEdge[0][0] &&
+        //   transformedHeadVerts[i][1] === rightEye.breakingEdge[0][1]
+        // ) {
+        //   for (let j = 0; j < rightEye.vertices.length; j++) {
+        //     p5.vertex(rightEye.vertices[j][0], rightEye.vertices[j][1]);
+        //   }
+        // }
       }
       p5.endShape(p5.CLOSE);
 
@@ -484,7 +484,11 @@ function BodySketch(props) {
     // draw hull
   };
 
-  return <Sketch setup={setup} draw={draw} />;
+  return (
+    <div className="body-container">
+      <Sketch setup={setup} draw={draw} />
+    </div>
+  );
 }
 
 const mapStateToProps = (state) => {

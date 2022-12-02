@@ -15,6 +15,10 @@ import {
 import { setVertices, storeVertices, getVertices } from "../services/dataStore";
 import { generateMoreVertices } from "../utils/vertices";
 
+let colorA, colorB;
+let step = 0.5;
+let count = 0;
+
 function Hull({ id }) {
   const dispatch = useDispatch();
 
@@ -30,7 +34,7 @@ function Hull({ id }) {
       if (response.allVertices) {
         console.log(response.allVertices);
         setAllVertices(response.allVertices);
-        const newHull = hull(response.allVertices, 50);
+        const newHull = hull(response.allVertices, 40);
         const eyeVerts = findEyeIntersectionPoint(
           newHull,
           response.leftEye,
@@ -43,23 +47,43 @@ function Hull({ id }) {
   }
 
   const setup = (p5, canvasParentRef) => {
-    p5.createCanvas(p5.windowWidth * 0.8, p5.windowHeight * 0.85).parent(
-      canvasParentRef
+    p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef);
+
+    // colorA = p5.color("#88c4e6");
+    // colorB = p5.color("#b42b6a");
+
+    colorA = p5.color(p5.random(0, 255), p5.random(0, 255), p5.random(0, 100));
+    colorB = p5.color(
+      p5.random(200, 255),
+      p5.random(100, 255),
+      p5.random(0, 255)
     );
 
     setCanvasHeight(p5.height);
     setCanvasWidth(p5.width);
   };
 
-  let count = 1;
+  let easing = 0.02;
+  let mix = 0;
+  let lerp = Math.random();
 
   const draw = (p5) => {
-    p5.background(2055, 0, 255);
+    let easedColor = p5.color(0, 0, 0);
+
+    if (colorA && colorB) {
+      let mixTarget = lerp;
+      mix = mix + (mixTarget - mix) * easing;
+
+      easedColor = p5.lerpColor(colorA, colorB, mix);
+      lerp = Math.random();
+    }
+    p5.background(easedColor);
 
     if (hullVertices.length) {
+      count += 1;
+
       const newVertices = placeAtBottom(hullVertices, p5.height, p5.width);
-      //   const hullVertices = hull(allVertices, 100);
-      //   console.log(hullVertices);
+
       p5.stroke(0, 0, 0);
       p5.strokeWeight(5);
 
@@ -67,17 +91,20 @@ function Hull({ id }) {
       p5.fill(255, 255, 255);
       p5.beginShape();
       for (let i = 0; i < newVertices.length; i++) {
-        p5.vertex(newVertices[i][0], newVertices[i][1]);
+        // console.log(count, step);
+        if (
+          newVertices[i][1] + step * count <= 0 ||
+          newVertices[i][1] + step * count >= p5.height
+        ) {
+          //   count = 0;
+          step *= -1;
+        }
+        p5.vertex(newVertices[i][0], newVertices[i][1] + step * count);
       }
       p5.endShape(p5.CLOSE);
     }
 
-    if (count === 1) {
-      if (hullVertices.length) {
-        console.log(placeAtBottom(hullVertices, canvasHeight, canvasWidth));
-        count = 2;
-      }
-    }
+    count += step < 0 ? -1 : 1;
 
     // draw hull
   };

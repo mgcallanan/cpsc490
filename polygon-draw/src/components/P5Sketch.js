@@ -269,15 +269,17 @@ function P5Sketch({ bodyPart }) {
   //   };
 
   return (
-    <Sketch
-      setup={setup}
-      draw={draw}
-      windowResized={windowResized}
-      mouseReleased={mouseReleased}
-      touchStarted={touchStarted}
-      //   doubleClicked={doubleClicked}
-      keyTyped={keyTyped}
-    />
+    <div className="sketch-container">
+      <Sketch
+        setup={setup}
+        draw={draw}
+        windowResized={windowResized}
+        mouseReleased={mouseReleased}
+        touchStarted={touchStarted}
+        //   doubleClicked={doubleClicked}
+        keyTyped={keyTyped}
+      />
+    </div>
   );
 }
 export default P5Sketch;

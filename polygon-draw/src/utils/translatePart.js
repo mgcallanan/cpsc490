@@ -44,8 +44,6 @@ const getPolygonInfo = (bBoxVals) => {
 const placePolygon = (shapeVertices, shapeInfo, targetX, targetY) => {
   let translatedVertices = [];
 
-  //   console.log(targetX, targetY, headInfo.centerX, headInfo.centerY);
-
   let diffX = targetX - shapeInfo.centerX;
   let diffY = targetY - shapeInfo.centerY;
 
@@ -84,20 +82,15 @@ const placeAtBottom = (vertices, height, width) => {
   const bBoxVals = calculateBBox(vertices);
   const polyInfo = getPolygonInfo(bBoxVals);
 
-  // console.log(bBoxVals, polyInfo, height);
-
   const newY = height / 2;
   const newX = width / 2;
-  // console.log(polyInfo.ry);
 
   const newVertices = placePolygon(vertices, polyInfo, newX, newY);
-  // console.log(newVertices);
+
   return newVertices;
 };
 
 const addEyes = (headVertices) => {
-  console.log(headVertices);
-
   const bBoxVals = calculateBBox(headVertices);
   const headInfo = getPolygonInfo(bBoxVals);
   const eyeY = headInfo.topLeftY + bBoxVals.height / 3;
@@ -119,7 +112,6 @@ const addEyes = (headVertices) => {
   const leftEyeLeftCornerIntersectTop = [leftEyeLeftCorner[0], 0];
 
   //find intersection with existing edges for right eye right corner
-  console.log("right eye");
   const rightEyeRightCornerIntersect = getEyeCornerIntersection(
     rightEyeRightCorner,
     rightEyeRightCornerIntersectTop,
@@ -133,7 +125,7 @@ const addEyes = (headVertices) => {
     headVertices,
     eyeY
   );
-  console.log("left eye");
+
   const leftEyeRightCornerIntersect = getEyeCornerIntersection(
     leftEyeRightCorner,
     leftEyeRightCornerIntersectTop,
@@ -145,13 +137,6 @@ const addEyes = (headVertices) => {
     leftEyeLeftCornerIntersectTop,
     headVertices,
     eyeY
-  );
-
-  console.log(
-    leftEyeLeftCornerIntersect,
-    leftEyeRightCornerIntersect,
-    rightEyeLeftCornerIntersect,
-    rightEyeRightCornerIntersect
   );
 
   return {
@@ -184,7 +169,6 @@ const getEyeCornerIntersection = (eyeStart, eyeEnd, headVertices, eyeY) => {
     const edgeEnd = headVertices[i + 1];
 
     intersection = lineLineIntersection(eyeStart, eyeEnd, edgeStart, edgeEnd);
-    console.log(eyeStart, eyeEnd, edgeStart, edgeEnd, intersection);
 
     if (intersection.length) {
       breakingEdge = [edgeStart, edgeEnd];
@@ -236,7 +220,6 @@ const lineLineIntersection = (eyeStart, eyeEnd, edgeStart, edgeEnd) => {
 };
 
 const findEyeIntersectionPoint = (allVertices, leftEyeInfo, rightEyeInfo) => {
-  console.log(leftEyeInfo);
   let deletingLeftVerts = false;
   let deletingRightVerts = false;
 
@@ -247,7 +230,6 @@ const findEyeIntersectionPoint = (allVertices, leftEyeInfo, rightEyeInfo) => {
   for (let i = 0; i < allVertices.length - 1; i++) {
     let curV = allVertices[i];
     let nextV = allVertices[i + 1];
-    console.log(curV, nextV, leftEyeInfo.vertices[0]);
 
     if (doneLeftEye && doneRightEye) {
       eyeVerts.push(allVertices[i]);
@@ -262,7 +244,6 @@ const findEyeIntersectionPoint = (allVertices, leftEyeInfo, rightEyeInfo) => {
         leftEyeInfo.vertices[3][1] <= Math.max(curV[1], nextV[1])
       ) {
         deletingLeftVerts = false;
-        console.log("END OF LEFT EYE");
         doneLeftEye = true;
       }
     } else {
@@ -272,8 +253,6 @@ const findEyeIntersectionPoint = (allVertices, leftEyeInfo, rightEyeInfo) => {
         leftEyeInfo.vertices[0][1] >= Math.min(curV[1], nextV[1]) &&
         leftEyeInfo.vertices[0][1] <= Math.max(curV[1], nextV[1])
       ) {
-        console.log(curV, leftEyeInfo.vertices[0], nextV);
-        console.log("START OF LEFT EYE");
         deletingLeftVerts = true;
         eyeVerts.push(...leftEyeInfo.vertices);
       }
@@ -287,7 +266,6 @@ const findEyeIntersectionPoint = (allVertices, leftEyeInfo, rightEyeInfo) => {
         rightEyeInfo.vertices[3][1] <= Math.max(curV[1], nextV[1])
       ) {
         deletingRightVerts = false;
-        console.log("END OF RIGHT EYE");
         doneRightEye = true;
       }
     } else {
@@ -297,8 +275,6 @@ const findEyeIntersectionPoint = (allVertices, leftEyeInfo, rightEyeInfo) => {
         rightEyeInfo.vertices[0][1] >= Math.min(curV[1], nextV[1]) &&
         rightEyeInfo.vertices[0][1] <= Math.max(curV[1], nextV[1])
       ) {
-        console.log(curV, rightEyeInfo.vertices[0], nextV);
-        console.log("START OF  RIGHT EYE");
         deletingRightVerts = true;
         eyeVerts.push(...rightEyeInfo.vertices);
       }
