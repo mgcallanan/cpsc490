@@ -10,10 +10,6 @@ const addVertices = (v1, v2) => {
 
   let vertices = [];
 
-  console.log(v1, v2);
-
-  console.log(leftMostV, rightMostV, increment_x, increment_y);
-
   for (let x = leftMostV[0]; x <= rightMostV[0]; x += increment_x) {
     if (
       y <= Math.max(rightMostV[1], leftMostV[1]) &&
@@ -23,7 +19,6 @@ const addVertices = (v1, v2) => {
     }
     y += increment_y;
   }
-  console.log(vertices);
 
   return vertices;
 };
@@ -38,7 +33,6 @@ const generateMoreVertices = (vertices) => {
 
     let newVertices = addVertices(vertices[vertices.length - 1], vertices[0]);
     finalVertices.push(...newVertices);
-    console.log(finalVertices);
     return finalVertices;
   }
 };
