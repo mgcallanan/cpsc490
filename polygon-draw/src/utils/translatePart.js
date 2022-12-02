@@ -235,24 +235,81 @@ const lineLineIntersection = (eyeStart, eyeEnd, edgeStart, edgeEnd) => {
   }
 };
 
-const findEyeIntersectionPoint = (allVertices, eyeInfo) => {
-  console.log(eyeInfo);
+const findEyeIntersectionPoint = (allVertices, leftEyeInfo, rightEyeInfo) => {
+  console.log(leftEyeInfo);
+  let deletingLeftVerts = false;
+  let deletingRightVerts = false;
+
+  let doneRightEye = false;
+  let doneLeftEye = false;
+
+  let eyeVerts = [];
   for (let i = 0; i < allVertices.length - 1; i++) {
     let curV = allVertices[i];
     let nextV = allVertices[i + 1];
-    console.log(curV, nextV, eyeInfo.vertices[0]);
+    console.log(curV, nextV, leftEyeInfo.vertices[0]);
 
-    if (
-      eyeInfo.vertices[0][0] >= Math.min(curV[0], nextV[0]) &&
-      eyeInfo.vertices[0][0] <= Math.max(curV[0], nextV[0]) &&
-      eyeInfo.vertices[0][1] >= Math.min(curV[1], nextV[1]) &&
-      eyeInfo.vertices[0][1] >= Math.max(curV[1], nextV[1])
-    ) {
-      console.log(curV, eyeInfo.vertices[0], nextV);
-      console.log("ITS IN BETWEEN");
-      break;
+    if (doneLeftEye && doneRightEye) {
+      eyeVerts.push(allVertices[i]);
+      continue;
+    }
+
+    if (deletingLeftVerts) {
+      if (
+        leftEyeInfo.vertices[3][0] >= Math.min(curV[0], nextV[0]) &&
+        leftEyeInfo.vertices[3][0] <= Math.max(curV[0], nextV[0]) &&
+        leftEyeInfo.vertices[3][1] >= Math.min(curV[1], nextV[1]) &&
+        leftEyeInfo.vertices[3][1] <= Math.max(curV[1], nextV[1])
+      ) {
+        deletingLeftVerts = false;
+        console.log("END OF LEFT EYE");
+        doneLeftEye = true;
+      }
+    } else {
+      if (
+        leftEyeInfo.vertices[0][0] >= Math.min(curV[0], nextV[0]) &&
+        leftEyeInfo.vertices[0][0] <= Math.max(curV[0], nextV[0]) &&
+        leftEyeInfo.vertices[0][1] >= Math.min(curV[1], nextV[1]) &&
+        leftEyeInfo.vertices[0][1] <= Math.max(curV[1], nextV[1])
+      ) {
+        console.log(curV, leftEyeInfo.vertices[0], nextV);
+        console.log("START OF LEFT EYE");
+        deletingLeftVerts = true;
+        eyeVerts.push(...leftEyeInfo.vertices);
+      }
+    }
+
+    if (deletingRightVerts) {
+      if (
+        rightEyeInfo.vertices[3][0] >= Math.min(curV[0], nextV[0]) &&
+        rightEyeInfo.vertices[3][0] <= Math.max(curV[0], nextV[0]) &&
+        rightEyeInfo.vertices[3][1] >= Math.min(curV[1], nextV[1]) &&
+        rightEyeInfo.vertices[3][1] <= Math.max(curV[1], nextV[1])
+      ) {
+        deletingRightVerts = false;
+        console.log("END OF RIGHT EYE");
+        doneRightEye = true;
+      }
+    } else {
+      if (
+        rightEyeInfo.vertices[0][0] >= Math.min(curV[0], nextV[0]) &&
+        rightEyeInfo.vertices[0][0] <= Math.max(curV[0], nextV[0]) &&
+        rightEyeInfo.vertices[0][1] >= Math.min(curV[1], nextV[1]) &&
+        rightEyeInfo.vertices[0][1] <= Math.max(curV[1], nextV[1])
+      ) {
+        console.log(curV, rightEyeInfo.vertices[0], nextV);
+        console.log("START OF  RIGHT EYE");
+        deletingRightVerts = true;
+        eyeVerts.push(...rightEyeInfo.vertices);
+      }
+    }
+
+    if (!deletingLeftVerts && !deletingRightVerts) {
+      eyeVerts.push(allVertices[i]);
     }
   }
+
+  return eyeVerts;
 };
 
 export {

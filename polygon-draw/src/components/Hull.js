@@ -31,8 +31,13 @@ function Hull({ id }) {
         console.log(response.allVertices);
         setAllVertices(response.allVertices);
         const newHull = hull(response.allVertices, 50);
-        findEyeIntersectionPoint(response.allVertices, response.leftEye);
-        setHullVertices(newHull);
+        const eyeVerts = findEyeIntersectionPoint(
+          newHull,
+          response.leftEye,
+          response.rightEye
+        );
+        console.log(eyeVerts);
+        setHullVertices(eyeVerts);
       }
     });
   }
@@ -49,16 +54,17 @@ function Hull({ id }) {
   let count = 1;
 
   const draw = (p5) => {
-    p5.background(0);
+    p5.background(2055, 0, 255);
 
     if (hullVertices.length) {
       const newVertices = placeAtBottom(hullVertices, p5.height, p5.width);
       //   const hullVertices = hull(allVertices, 100);
       //   console.log(hullVertices);
-      p5.stroke(255, 255, 255);
+      p5.stroke(0, 0, 0);
       p5.strokeWeight(5);
 
       p5.noFill();
+      p5.fill(255, 255, 255);
       p5.beginShape();
       for (let i = 0; i < newVertices.length; i++) {
         p5.vertex(newVertices[i][0], newVertices[i][1]);

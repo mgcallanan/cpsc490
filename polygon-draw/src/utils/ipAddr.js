@@ -1,1 +1,1 @@
-export const SERVER_IP_ADDR = "10.0.0.186";
+export const SERVER_IP_ADDR = "172.29.131.78";
