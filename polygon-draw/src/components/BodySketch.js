@@ -74,7 +74,6 @@ function BodySketch(props) {
       headBBoxVals,
       HEAD_SCALE_FACTOR
     );
-    console.log("heyyyy");
     if (!transformedHeadVerts.length) {
       setTransformedHeadVerts(
         placePolygon(
@@ -229,7 +228,6 @@ function BodySketch(props) {
         console.log(eyes);
       }
       const moreHeadVerts = generateMoreVertices(transformedHeadVerts);
-      console.log(moreHeadVerts, transformedHeadVerts);
       setAllVertices((prevState) => prevState.concat(moreHeadVerts));
     } else {
       setAllVertices((prevState) => prevState.concat(transformedHeadVerts));
@@ -292,9 +290,12 @@ function BodySketch(props) {
       payload: allVertices,
     });
     console.log(connectedToProjectorID);
-    storeVertices({ id: connectedToProjectorID, allVertices }).then(
-      (response) => console.log(response)
-    );
+    storeVertices({
+      id: connectedToProjectorID,
+      allVertices,
+      rightEye: rightEye,
+      leftEye: leftEye,
+    }).then((response) => console.log(response));
   }, [allVertices]);
 
   const setup = (p5, canvasParentRef) => {

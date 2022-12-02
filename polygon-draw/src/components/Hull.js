@@ -10,6 +10,7 @@ import {
   scalePolygon,
   placePolygon,
   placeAtBottom,
+  findEyeIntersectionPoint,
 } from "../utils/translatePart";
 import { setVertices, storeVertices, getVertices } from "../services/dataStore";
 import { generateMoreVertices } from "../utils/vertices";
@@ -27,10 +28,11 @@ function Hull({ id }) {
       console.log(response);
       console.log(response.allVertices);
       if (response.allVertices) {
-        const moreVertices = generateMoreVertices(response.allVertices);
-        console.log(moreVertices);
-        setAllVertices(moreVertices);
-        setHullVertices(hull(moreVertices, 50));
+        console.log(response.allVertices);
+        setAllVertices(response.allVertices);
+        const newHull = hull(response.allVertices, 50);
+        findEyeIntersectionPoint(response.allVertices, response.leftEye);
+        setHullVertices(newHull);
       }
     });
   }

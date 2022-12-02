@@ -20,7 +20,6 @@ const URL = `ws://${SERVER_IP_ADDR}:9000`;
 
 function Prompt(props) {
   const { allVertices, connectedToProjectorID } = props;
-  console.log(allVertices);
 
   const [newScreen, setNewScreen] = useState(0);
   const [displayHull, setDisplayHull] = useState(true);
@@ -70,10 +69,8 @@ function Prompt(props) {
       type: shapeActions.SET_BODY_COMPLETE,
       payload: true,
     });
-    console.log(allVertices);
     submitMessage("submit", allVertices, connectedToProjectorID);
     // sendMessage("hello");
-    console.log("yay");
   };
 
   return (
