@@ -12,6 +12,7 @@ import {
   placeAtBottom,
 } from "../utils/translatePart";
 import { setVertices, storeVertices, getVertices } from "../services/dataStore";
+import { generateMoreVertices } from "../utils/vertices";
 
 function Hull({ id }) {
   const dispatch = useDispatch();
@@ -26,8 +27,10 @@ function Hull({ id }) {
       console.log(response);
       console.log(response.allVertices);
       if (response.allVertices) {
-        setAllVertices(response.allVertices);
-        setHullVertices(hull(response.allVertices, 120));
+        const moreVertices = generateMoreVertices(response.allVertices);
+        console.log(moreVertices);
+        setAllVertices(moreVertices);
+        setHullVertices(hull(moreVertices, 50));
       }
     });
   }

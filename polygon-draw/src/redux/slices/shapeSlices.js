@@ -59,7 +59,6 @@ const shapesSlice = createSlice({
       };
     },
     updateAllVertices(state, action) {
-      console.log(action.payload);
       return {
         ...state,
         allVertices: action.payload,

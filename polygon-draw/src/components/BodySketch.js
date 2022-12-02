@@ -12,6 +12,7 @@ import {
   addEyes,
 } from "../utils/translatePart";
 import { setVertices, storeVertices } from "../services/dataStore";
+import { generateMoreVertices } from "../utils/vertices";
 
 const SCALE_FACTOR = 0.5;
 const HEAD_SCALE_FACTOR = 0.7;
@@ -84,13 +85,6 @@ function BodySketch(props) {
         )
       );
       // setAllVertices((prevState) => [...prevState, ...transformedHeadVerts]);
-    } else {
-      if (!Object.keys(leftEye).length || !Object.keys(rightEye).length) {
-        const eyes = addEyes(transformedHeadVerts);
-        setRightEye(eyes.rightEye);
-        setLeftEye(eyes.leftEye);
-        console.log(eyes);
-      }
     }
   }
   if (torsoComplete) {
@@ -227,23 +221,69 @@ function BodySketch(props) {
   }
 
   useEffect(() => {
-    setAllVertices((prevState) => prevState.concat(transformedHeadVerts));
+    if (transformedHeadVerts.length) {
+      if (!Object.keys(leftEye).length || !Object.keys(rightEye).length) {
+        const eyes = addEyes(transformedHeadVerts);
+        setRightEye(eyes.rightEye);
+        setLeftEye(eyes.leftEye);
+        console.log(eyes);
+      }
+      const moreHeadVerts = generateMoreVertices(transformedHeadVerts);
+      console.log(moreHeadVerts, transformedHeadVerts);
+      setAllVertices((prevState) => prevState.concat(moreHeadVerts));
+    } else {
+      setAllVertices((prevState) => prevState.concat(transformedHeadVerts));
+    }
   }, [transformedHeadVerts]);
 
   useEffect(() => {
-    setAllVertices((prevState) => prevState.concat(transformedTorsoVerts));
+    if (transformedTorsoVerts.length) {
+      const moreTorsoVerts = generateMoreVertices(transformedTorsoVerts);
+
+      setAllVertices((prevState) => prevState.concat(moreTorsoVerts));
+    } else {
+      setAllVertices((prevState) => prevState.concat(transformedTorsoVerts));
+    }
   }, [transformedTorsoVerts]);
   useEffect(() => {
-    setAllVertices((prevState) => prevState.concat(transformedRightArmVerts));
+    if (transformedRightArmVerts.length) {
+      const moreRightArmVertices = generateMoreVertices(
+        transformedRightArmVerts
+      );
+
+      setAllVertices((prevState) => prevState.concat(moreRightArmVertices));
+    } else {
+      setAllVertices((prevState) => prevState.concat(transformedRightArmVerts));
+    }
   }, [transformedRightArmVerts]);
   useEffect(() => {
-    setAllVertices((prevState) => prevState.concat(transformedLeftArmVerts));
+    if (transformedLeftArmVerts.length) {
+      const moreLeftArmVerts = generateMoreVertices(transformedLeftArmVerts);
+
+      setAllVertices((prevState) => prevState.concat(moreLeftArmVerts));
+    } else {
+      setAllVertices((prevState) => prevState.concat(transformedLeftArmVerts));
+    }
   }, [transformedLeftArmVerts]);
   useEffect(() => {
-    setAllVertices((prevState) => prevState.concat(transformedRightLegVerts));
+    if (transformedRightArmVerts.length) {
+      const moreRightLegVertices = generateMoreVertices(
+        transformedRightLegVerts
+      );
+
+      setAllVertices((prevState) => prevState.concat(moreRightLegVertices));
+    } else {
+      setAllVertices((prevState) => prevState.concat(transformedRightLegVerts));
+    }
   }, [transformedRightLegVerts]);
   useEffect(() => {
-    setAllVertices((prevState) => prevState.concat(transformedLeftLegVerts));
+    if (transformedLeftLegVerts.length) {
+      const moreLeftLegVerts = generateMoreVertices(transformedLeftLegVerts);
+
+      setAllVertices((prevState) => prevState.concat(moreLeftLegVerts));
+    } else {
+      setAllVertices((prevState) => prevState.concat(transformedLeftLegVerts));
+    }
   }, [transformedLeftLegVerts]);
 
   useEffect(() => {
@@ -283,9 +323,12 @@ function BodySketch(props) {
       // p5.endShape(p5.CLOSE);
 
       p5.beginShape();
-      for (let i = 0; i < transformedHeadVerts.length; i++) {
+      for (
+        let i = 0;
+        i < transformedHeadVerts.length && leftEye.breakingEdge;
+        i++
+      ) {
         p5.vertex(transformedHeadVerts[i][0], transformedHeadVerts[i][1]);
-
         if (
           transformedHeadVerts[i][0] === leftEye.breakingEdge[0][0] &&
           transformedHeadVerts[i][1] === leftEye.breakingEdge[0][1]
@@ -423,6 +466,10 @@ function BodySketch(props) {
 
     if (bodyComplete) {
       //   console.log("ALLLLL DONEEEE");
+      // for (let i = 0; i < allVertices.length; i++) {
+      //   p5.stroke(255, 0, 0);
+      //   p5.ellipse(allVertices[i][0], allVertices[i][1], 1);
+      // }
       const hullVertices = hull(allVertices, props.k);
       p5.stroke(0, 0, 255);
       p5.noFill();
