@@ -74,7 +74,7 @@ function Projector(props) {
   return (
     <div className="projector-container">
       {bodyDone ? (
-        <div className="id-container">
+        <div className="result-container">
           <Hull id={projectorID} />
         </div>
       ) : (

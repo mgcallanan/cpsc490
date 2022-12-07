@@ -45,7 +45,7 @@ function Artist(props) {
   //   });
 
   const handleChange = (event) => {
-    setProjectorID(event.target.value);
+    setProjectorID(event.target.value.toUpperCase());
   };
   const handleSubmit = (event) => {
     dispatch({
@@ -64,7 +64,12 @@ function Artist(props) {
       <div className="id-container">
         <form onSubmit={handleSubmit}>
           <label>Projector ID:</label>
-          <input type="text" name="projID" onChange={handleChange} />
+          <input
+            type="text"
+            name="projID"
+            style={{ textTransform: "uppercase" }}
+            onChange={handleChange}
+          />
           <input type="submit" value="Submit" />
         </form>
       </div>

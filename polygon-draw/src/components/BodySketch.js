@@ -225,7 +225,6 @@ function BodySketch(props) {
         const eyes = addEyes(transformedHeadVerts);
         setRightEye(eyes.rightEye);
         setLeftEye(eyes.leftEye);
-        console.log(eyes);
       }
       const moreHeadVerts = generateMoreVertices(transformedHeadVerts);
       setAllVertices((prevState) => prevState.concat(moreHeadVerts));
@@ -289,7 +288,6 @@ function BodySketch(props) {
       type: shapeActions.UPDATE_ALL_VERTICES,
       payload: allVertices,
     });
-    console.log(connectedToProjectorID);
     storeVertices({
       id: connectedToProjectorID,
       allVertices,
@@ -308,7 +306,7 @@ function BodySketch(props) {
   };
 
   const draw = (p5) => {
-    p5.background(0);
+    p5.background("rgba(0,0,0,0)");
     if (!bodyComplete || props.displayHull) {
       p5.stroke(255, 255, 255);
       // p5.fill(255, 0, 0);
@@ -324,11 +322,7 @@ function BodySketch(props) {
       // p5.endShape(p5.CLOSE);
 
       p5.beginShape();
-      for (
-        let i = 0;
-        i < transformedHeadVerts.length && leftEye.breakingEdge.length;
-        i++
-      ) {
+      for (let i = 0; i < transformedHeadVerts.length; i++) {
         p5.vertex(transformedHeadVerts[i][0], transformedHeadVerts[i][1]);
         // if (
         //   transformedHeadVerts[i][0] === leftEye.breakingEdge[0][0] &&
@@ -465,30 +459,26 @@ function BodySketch(props) {
       p5.endShape(p5.CLOSE);
     }
 
-    if (bodyComplete) {
-      //   console.log("ALLLLL DONEEEE");
-      // for (let i = 0; i < allVertices.length; i++) {
-      //   p5.stroke(255, 0, 0);
-      //   p5.ellipse(allVertices[i][0], allVertices[i][1], 1);
-      // }
-      const hullVertices = hull(allVertices, props.k);
-      p5.stroke(0, 0, 255);
-      p5.noFill();
-      p5.beginShape();
-      for (let i = 0; i < hullVertices.length; i++) {
-        p5.vertex(hullVertices[i][0], hullVertices[i][1]);
-      }
-      p5.endShape(p5.CLOSE);
-    }
+    // if (bodyComplete) {
+    //   console.log("ALLLLL DONEEEE");
+    //   for (let i = 0; i < allVertices.length; i++) {
+    //     p5.stroke(255, 0, 0);
+    //     p5.ellipse(allVertices[i][0], allVertices[i][1], 1);
+    //   }
+    //   const hullVertices = hull(allVertices, 20);
+    //   p5.stroke(0, 0, 255);
+    //   p5.noFill();
+    //   p5.beginShape();
+    //   for (let i = 0; i < hullVertices.length; i++) {
+    //     p5.vertex(hullVertices[i][0], hullVertices[i][1]);
+    //   }
+    //   p5.endShape(p5.CLOSE);
+    // }
 
     // draw hull
   };
 
-  return (
-    <div className="body-container">
-      <Sketch setup={setup} draw={draw} />
-    </div>
-  );
+  return <Sketch setup={setup} draw={draw} />;
 }
 
 const mapStateToProps = (state) => {
