@@ -34,10 +34,7 @@ function Hull({ id }) {
 
   if (!allVertices.length) {
     getVertices(id).then((response) => {
-      console.log(response);
-      console.log(response.allVertices);
       if (response.allVertices) {
-        console.log(response.allVertices);
         setAllVertices(response.allVertices);
         const newHull = hull(response.allVertices, 40);
         const eyeVerts = findEyeIntersectionPoint(
@@ -47,8 +44,7 @@ function Hull({ id }) {
         );
         const hullBboxValues = calculateBBox(eyeVerts);
         const biggerHull = scalePolygon(eyeVerts, hullBboxValues, 1.5);
-        console.log(eyeVerts);
-        console.log(biggerHull);
+
         setHullVertices(biggerHull.vertices);
       }
     });

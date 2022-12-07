@@ -6,11 +6,9 @@ import "../styles/projector.scss";
 import BodySketch from "./BodySketch";
 import * as shapeActions from "../redux/actions/shapeActions";
 import { getProjectors, addProjector } from "../services/dataStore";
-import { SERVER_IP_ADDR } from "../utils/ipAddr";
+import { SOCKET_URL } from "../utils/ipAddr";
 import Hull from "./Hull";
-
-// const socketURL = "ws://localhost:3000/ws";
-const URL = `ws://${SERVER_IP_ADDR}:9000`;
+import WaitingScreen from "./WaitingScreen";
 
 const idExists = (projID, projectors) => {
   return projectors.some((e) => e.id === projID);
@@ -19,8 +17,10 @@ const idExists = (projID, projectors) => {
 function Projector(props) {
   const [projectorID, setProjectorID] = useState("");
   const [bodyDone, setBodyDone] = useState(false);
+  const [connectionInitiated, setConnectionInitiated] = useState(false);
+  const [userNameConnected, setUserNameConnected] = useState("");
   const dispatch = useDispatch();
-  const [ws, setWs] = useState(new WebSocket(URL));
+  const [ws, setWs] = useState(new WebSocket(SOCKET_URL));
 
   useEffect(() => {
     ws.onopen = () => {
@@ -30,15 +30,23 @@ function Projector(props) {
     ws.onmessage = (e) => {
       const message = JSON.parse(e.data);
       console.log(message);
-      if (message.projectorID === projectorID) {
-        setBodyDone(true);
+      if (message.type === "submit") {
+        if (message.projectorID === projectorID) {
+          setBodyDone(true);
+        }
+      }
+      if (message.type === "connectionInitiated") {
+        if (message.projectorID === projectorID) {
+          setConnectionInitiated(true);
+          setUserNameConnected(message.userName);
+        }
       }
     };
 
     return () => {
       ws.onclose = () => {
         console.log("WebSocket Disconnected");
-        setWs(new WebSocket(URL));
+        setWs(new WebSocket(SOCKET_URL));
       };
     };
   }, [ws.onmessage, ws.onopen, ws.onclose]);
@@ -79,13 +87,19 @@ function Projector(props) {
         </div>
       ) : (
         <>
-          <div className="projector-header">
-            <h1>PROJECTOR ID</h1>
-          </div>
-          <div className="id-container">
-            <div>{projectorID.slice(0, 1)}</div>
-            <div>{projectorID.slice(1, 2)}</div>
-          </div>
+          {connectionInitiated ? (
+            <WaitingScreen userName={userNameConnected} />
+          ) : (
+            <>
+              <div className="projector-header">
+                <h1>PROJECTOR ID</h1>
+              </div>
+              <div className="id-container">
+                <div>{projectorID.slice(0, 1)}</div>
+                <div>{projectorID.slice(1, 2)}</div>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>
