@@ -7,6 +7,7 @@ import * as shapeActions from "../redux/actions/shapeActions";
 import { getProjectors, addProjector } from "../services/dataStore";
 import { useNavigate } from "react-router-dom";
 import * as userActions from "../redux/actions/userActions";
+import { SOCKET_URL } from "../utils/ipAddr";
 
 const BODY_PARTS = [
   "Head",
@@ -23,10 +24,12 @@ const idExists = (projID, projectors) => {
 
 function Artist(props) {
   const [projectorID, setProjectorID] = useState("");
+  const [userName, setUserName] = useState("");
   const [displayHull, setDisplayHull] = useState(true);
   const [k, setK] = useState(20);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [ws, setWs] = useState(new WebSocket(SOCKET_URL));
 
   //   getProjectors().then((response) => {
   //     console.log(response);
@@ -44,8 +47,11 @@ function Artist(props) {
   //     }
   //   });
 
-  const handleChange = (event) => {
-    setProjectorID(event.target.value);
+  const handleIDChange = (event) => {
+    setProjectorID(event.target.value.toUpperCase());
+  };
+  const handleNameChange = (event) => {
+    setUserName(event.target.value.toUpperCase());
   };
   const handleSubmit = (event) => {
     dispatch({
@@ -53,18 +59,37 @@ function Artist(props) {
       payload: projectorID,
     });
     console.log(projectorID);
+    const message = {
+      type: "connectionInitiated",
+      userName: userName,
+      projectorID: projectorID,
+    };
+    ws.send(JSON.stringify(message));
+
     navigate("/prompt");
   };
 
   return (
     <div className="artist-container">
-      <div className="artist-header">
+      {/* <div className="artist-header">
         <h1>WHICH PROJECTOR ARE YOU IN FRONT OF?</h1>
-      </div>
+      </div> */}
       <div className="id-container">
         <form onSubmit={handleSubmit}>
-          <label>Projector ID:</label>
-          <input type="text" name="projID" onChange={handleChange} />
+          <label>NAME YOUR FIGURE:</label>
+          <input
+            type="text"
+            name="Name"
+            style={{ textTransform: "uppercase" }}
+            onChange={handleNameChange}
+          />
+          <label>PROJECTOR ID:</label>
+          <input
+            type="text"
+            name="projID"
+            style={{ textTransform: "uppercase" }}
+            onChange={handleIDChange}
+          />
           <input type="submit" value="Submit" />
         </form>
       </div>

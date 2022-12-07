@@ -6,19 +6,6 @@
   height: 100%;
   width: 100%;
 
-  .projector-header {
-    text-align: center;
-  }
-
-  .id-container {
-    flex-grow: 1;
-    font-size: 30vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
   .waiting-scr-container {
     flex-grow: 1;
     font-size: 3em;
@@ -26,6 +13,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100%;
     .react-p5 {
       border: none;
     }
