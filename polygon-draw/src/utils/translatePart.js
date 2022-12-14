@@ -111,7 +111,6 @@ const addEyes = (headVertices) => {
   const leftEyeRightCornerIntersectTop = [leftEyeRightCorner[0], 0];
   const leftEyeLeftCornerIntersectTop = [leftEyeLeftCorner[0], 0];
 
-  //find intersection with existing edges for right eye right corner
   const rightEyeRightCornerIntersect = getEyeCornerIntersection(
     rightEyeRightCorner,
     rightEyeRightCornerIntersectTop,

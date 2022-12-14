@@ -32,48 +32,27 @@ function Prompt(props) {
       vertices: vertices,
       projectorID: connectedToProjectorID,
     };
-    console.log(message);
     ws.send(JSON.stringify(message));
   };
 
   useEffect(() => {
-    ws.onopen = () => {
-      console.log("WebSocket Connected");
-    };
-
-    ws.onmessage = (e) => {
-      const message = JSON.parse(e.data);
-      console.log(message);
-    };
-
     return () => {
       ws.onclose = () => {
-        console.log("WebSocket Disconnected");
         setWs(new WebSocket(SOCKET_URL));
       };
     };
-  }, [ws.onmessage, ws.onopen, ws.onclose]);
-
-  // const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
-  //   onOpen: () => console.log("WebSocket connection opened."),
-  //   onClose: () => console.log("WebSocket connection closed."),
-  //   shouldReconnect: (closeEvent) => true,
-  //   onMessage: (event) => console.log(event),
-  // });
+  }, [ws.onclose]);
 
   if (!connectedToProjectorID) {
     navigate("/artist");
-    // return;
   }
 
   const handleDone = () => {
-    // sendMessage("Hello");
     dispatch({
       type: shapeActions.SET_BODY_COMPLETE,
       payload: true,
     });
     submitMessage("submit", allVertices, connectedToProjectorID);
-    // sendMessage("hello");
   };
 
   useEffect(() => {
@@ -107,34 +86,16 @@ function Prompt(props) {
         </div>
       </div>
       <div className="prompt-done-btn-container">
-        {/* {newScreen < BODY_PARTS.length ? (
-          <div></div>
-        ) : (
-          <button
-            className="prompt-done-btn"
-            onClick={() => setDisplayHull(!displayHull)}
-          >
-            O
-          </button>
-        )} */}
         <button
           className="prompt-done-btn"
           onClick={
             newScreen < BODY_PARTS.length
               ? () => setNewScreen(newScreen + 1)
-              : // () => handleDone()
-                () => handleDone()
+              : () => handleDone()
           }
         >
           {newScreen < BODY_PARTS.length ? "Next Part" : "Convert"}
         </button>
-        {/* {newScreen < BODY_PARTS.length ? (
-          <div></div>
-        ) : (
-          <button className="prompt-done-btn" onClick={() => setK(k + 10)}>
-            K ^
-          </button>
-        )} */}
       </div>
     </div>
   );

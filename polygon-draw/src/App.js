@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Artist from "./components/Artist";
 import Login from "./components/Login";
-import P5Sketch from "./components/P5Sketch";
 import Projector from "./components/Projector";
 import Prompt from "./components/Prompt";
 import "./styles/main.scss";

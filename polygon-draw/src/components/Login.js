@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import * as userActions from "../redux/actions/userActions";
 import { useNavigate } from "react-router-dom";
-import { addProjector, getProjectors } from "../services/dataStore";
 
 import "../styles/login.scss";
 

@@ -1,11 +1,8 @@
 // Taken from P5 website: https://p5js.org/examples/simulate-particles.html
 
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import Sketch from "react-p5/";
-import hull from "hull.js";
 import "../styles/p5sketch.scss";
-import * as shapeActions from "../redux/actions/shapeActions";
 
 function ParticleSystem({ userName }) {
   // an array to add multiple particles
@@ -38,8 +35,6 @@ function ParticleSystem({ userName }) {
         const randomG = p5.random(0, 255);
         const randomB = p5.random(0, 255);
 
-        // p5.fill(randomR, randomG, randomB, 0.5);
-        //   const rgbString = `rgba(${randomR}, ${randomG}, ${randomB}, 0.5)`;
         const rgbString =
           "rgb(" + randomR + ", " + randomG + ", " + randomB + "";
         p5.noStroke();

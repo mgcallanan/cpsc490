@@ -21,13 +21,6 @@ export const getProjectors = async () => {
   });
   const data = await response.json();
   return data;
-  //   fetch(`http://localhost:8080/projectors`, {
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //     method: "GET",
-  //   }).then((response) => response.json());
 };
 
 export const addProjector = (projector) => {
@@ -42,16 +35,6 @@ export const addProjector = (projector) => {
 };
 
 export const storeVertices = async (projector) => {
-  //   fetch(`http://localhost:8080/projectors/${projector.id}`, {
-  //     body: JSON.stringify(projector),
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //     method: "PUT",
-  //   }).then((response) => response.json());
-  // };
-
   const response = await fetch(
     `http://${SERVER_IP_ADDR}:8080/projectors/${projector.id}`,
     {
@@ -93,13 +76,5 @@ export const getVertices = async (projectorID) => {
     }
   );
   const data = await response.json();
-  console.log(data);
   return data;
-  //   fetch(`http://localhost:8080/projectors`, {
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //     method: "GET",
-  //   }).then((response) => response.json());
 };
