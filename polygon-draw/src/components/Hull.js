@@ -43,7 +43,7 @@ function Hull({ id }) {
           response.rightEye
         );
         const hullBboxValues = calculateBBox(eyeVerts);
-        const biggerHull = scalePolygon(eyeVerts, hullBboxValues, 1.5);
+        const biggerHull = scalePolygon(eyeVerts, hullBboxValues, 2);
 
         setHullVertices(biggerHull.vertices);
       }
