@@ -1,4 +1,3 @@
-// import * as shapeActions from "../actions/shapeActions"
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {

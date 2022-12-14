@@ -8,9 +8,6 @@ body {
 body {
   background-color: black;
   overflow: hidden;
-
-  //   height: 100vh;
-  //   width: 100vw;
 }
 
 #root {
@@ -18,7 +15,6 @@ body {
 }
 
 .container {
-  // background-color: black;
   height: 100%;
   width: 100%;
 }
@@ -42,10 +38,7 @@ button {
   background-color: black;
   color: white;
   margin: 1%;
-  //   height: 50%;
-  //   width: 30%;
   font-size: 2em;
   font-weight: bold;
   padding: 2% 4%;
-  //   vertical-align: center;
 }

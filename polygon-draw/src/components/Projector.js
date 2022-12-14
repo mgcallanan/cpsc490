@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import useWebSocket, { useSocketIO } from "react-use-websocket";
-import P5Sketch from "./P5Sketch";
 import "../styles/projector.scss";
-import BodySketch from "./BodySketch";
-import * as shapeActions from "../redux/actions/shapeActions";
 import { getProjectors, addProjector } from "../services/dataStore";
 import { SOCKET_URL } from "../utils/ipAddr";
 import Hull from "./Hull";
@@ -19,7 +14,6 @@ function Projector(props) {
   const [bodyDone, setBodyDone] = useState(false);
   const [connectionInitiated, setConnectionInitiated] = useState(false);
   const [userNameConnected, setUserNameConnected] = useState("");
-  const dispatch = useDispatch();
   const [ws, setWs] = useState(new WebSocket(SOCKET_URL));
 
   useEffect(() => {
@@ -29,7 +23,6 @@ function Projector(props) {
 
     ws.onmessage = (e) => {
       const message = JSON.parse(e.data);
-      console.log(message);
       if (message.type === "submit") {
         if (message.projectorID === projectorID) {
           setBodyDone(true);
@@ -51,13 +44,6 @@ function Projector(props) {
     };
   }, [ws.onmessage, ws.onopen, ws.onclose]);
 
-  // const { sendMessage, lastMessage, readyState } = useWebSocket(socketURL, {
-  //   onOpen: () => console.log("WebSocket connection opened."),
-  //   onClose: () => console.log("WebSocket connection closed."),
-  //   shouldReconnect: (closeEvent) => true,
-  //   onMessage: (event) => console.log(event),
-  // });
-
   getProjectors().then((response) => {
     if (!projectorID) {
       let newProjID = Math.random().toString(36).toUpperCase().slice(2, 4);
@@ -72,12 +58,6 @@ function Projector(props) {
       addProjector(newProj);
     }
   });
-
-  // useEffect(() => {
-  //   if (lastMessage != null) {
-  //     console.log(lastMessage);
-  //   }
-  // }, [lastMessage]);
 
   return (
     <div className="projector-container">
