@@ -2,9 +2,9 @@
 
 ## Continuous Line Interpretation of User Drawn Polygons
 
-_Documentation Last Updated: 11/11/22_
+_Documentation Last Updated: 12/14/22_
 
-Codebase for my senior project for CPSC 490 at Yale University. Advised by Dr. Scott Petersen.
+Codebase for my senior project for CPSC 490 at Yale University. Advised by Dr. Scott Petersen. A demo of the system installed can be found [here](https://youtu.be/Pm56kx5IGyY).
 
 ## Project Overview
 
@@ -16,6 +16,8 @@ The project requires that you have Node.js installed on your system. See install
 
 ### Getting Set Up
 
+#### Installing Libraries
+
 Once you have Node installed, run the terminal commands below from the `cpsc490` directory:
 
 ```
@@ -24,6 +26,14 @@ Once you have Node installed, run the terminal commands below from the `cpsc490`
 ```
 
 This command will install all of the required dependencies for the project.
+
+#### Setting IP Address
+
+In order for users to connect, you have to set the server IP to be the IP address for parts of the system.
+
+In [cpsc490/polygon-draw/package.json](./polygon-draw/package.json) in line 28 in the `dev-server` script command, change the IP address to be your machine's public IP address (which you can find by searching "what is my ip" using your preferred browser).
+
+In [cpsc490/polygon-draw/src/utils/ipAddr.js](./polygon-draw/src/utils/ipAddr.js) in line 1, change the `SERVER_IP_ADDR` value to be your machine's public IP address (which you can find by searching "what is my ip" using your preferred browser).
 
 ### Running the Program
 
@@ -34,7 +44,25 @@ Still working from the `cpsc490` directory, run the following commands:
 ~/cpsc490/polygon-draw$ npm start
 ```
 
-Navigate to `localhost:3000` to observe the site and use.
+This starts the UI element of the project. Navigate to `localhost:3000` to observe the site and use.
+
+Open a new terminal tab and from the `cpsc490` directory, run the following commands:
+
+```
+~/cpsc490$ cd polygon-draw/server
+~/cpsc490/polygon-draw/server$ node index.js
+```
+
+This starts the WebSocket server for the application.
+
+Now, open one more terminal tab (while keeping the previous two open), and from the `cpsc490` directory, run the following commands:
+
+```
+~/cpsc490$ cd polygon-draw
+~/cpsc490/polygon-draw$ npm run dev-server
+```
+
+This sets up the mock database backend for the project.
 
 ## How to Use
 
@@ -50,17 +78,7 @@ Once you finish the polygon, the system automatically places the shape where it 
 
 ### Converting to an Outline
 
-![](demos/convert.gif)
-
-Once the user has finished inputting all of the body parts, they will be oprompted to convert the figure into its concave hull counterpart. This outline shows up in blue, as seen above. The user can then increase the `k` value by pressing the `K^` button, which determines the concavity of the hull, to see what kind of figures will appear.
-
-The user can also trigger their original polygonal figure to be displayed or not using the `O` button.
-
-## Features In Progress
-
-- [ ] Making the figures more human-discernable
-- [ ] Cleaning up the code and making it more modular
-- [ ] Create interface if the figure is a projector
+Once the user has finished inputting all of the body parts, they will be prompted to convert the figure into its concave hull counterpart. This outline shows up on the projector that the user is connected to.
 
 ## Dependencies
 
